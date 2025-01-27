@@ -6,6 +6,6 @@
     "name": "confluence-website",
     "backgroundColor": "rgb(182,194,207)",
     "highlightColor": "#000000",
-    "mode": "dark"
+    "mode": "light"
   }
 }
