@@ -17,9 +17,9 @@ import path from 'path';
 
 import { listFiles } from '@labset/fs-directory';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 
-import { Output } from '../common';
+import { Output, prepareSiteProperties } from '../common';
 
 interface WebpackConfigProps {
     mode: 'production' | 'development';
@@ -45,7 +45,11 @@ const webpackConfig = ({
         });
     });
 
-    const plugins = [...htmlPlugins];
+    const definePlugin = new DefinePlugin({
+        __SITE_PROPERTIES__: JSON.stringify(prepareSiteProperties())
+    });
+
+    const plugins = [definePlugin, ...htmlPlugins];
 
     const staticSiteSources = path.join(__dirname, '..', 'static-site');
     const siteEntry = isDev

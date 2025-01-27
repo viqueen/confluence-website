@@ -16,21 +16,42 @@
 import {
   AtlassianNavigation,
   CustomProductHome,
+  generateTheme,
+  PrimaryButton,
 } from "@atlaskit/atlassian-navigation";
-import React from "react";
+import React, { ReactNode } from "react";
+
+import { siteProperties } from "./site-properties";
+
+const HomeLink = () => {
+  return (
+    <a href="/" style={{ textDecoration: "none" }}>
+      <PrimaryButton isHighlighted={true}>{siteProperties.title}</PrimaryButton>
+    </a>
+  );
+};
 
 const Home = () => {
   return (
-    <CustomProductHome iconAlt={""} iconUrl={""} logoAlt={""} logoUrl={""} />
+    <CustomProductHome
+      iconAlt={siteProperties.title}
+      iconUrl={siteProperties.iconUrl}
+      logoAlt={siteProperties.title}
+      logoUrl={siteProperties.iconUrl}
+    />
   );
 };
 
 const SiteTopNavigation = () => {
+  const theme = generateTheme(siteProperties.theme);
+  const items = [<HomeLink key={0} />] as ReadonlyArray<ReactNode>;
+
   return (
     <AtlassianNavigation
-      label={"confluence-website"}
-      primaryItems={[]}
+      label={siteProperties.name}
+      primaryItems={items}
       renderProductHome={Home}
+      theme={theme}
     />
   );
 };

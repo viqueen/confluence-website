@@ -4,8 +4,8 @@
   "name": "/website",
   "theme": {
     "name": "confluence-website",
-    "backgroundColor": "rgb(0, 102, 68)",
-    "highlightColor": "#FFFFFF",
-    "mode": "light"
+    "backgroundColor": "rgb(182,194,207)",
+    "highlightColor": "#000000",
+    "mode": "dark"
   }
 }

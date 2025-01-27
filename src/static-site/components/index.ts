@@ -16,3 +16,4 @@
 export * from './site-content';
 export * from './site-left-navigation';
 export * from './site-top-navigation';
+export * from './site-properties';

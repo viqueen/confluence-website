@@ -28,12 +28,13 @@ import "@atlaskit/css-reset/dist/bundle.css";
 import {
   SiteContent,
   SiteLeftNavigation,
+  siteProperties,
   SiteTopNavigation,
 } from "./components";
 
 const Site = () => {
   return (
-    <AppProvider defaultColorMode="light">
+    <AppProvider defaultColorMode={siteProperties.theme.mode}>
       <PageLayout>
         <TopNavigation>
           <SiteTopNavigation />

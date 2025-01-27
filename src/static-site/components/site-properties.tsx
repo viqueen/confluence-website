@@ -13,20 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import fs from 'fs';
-import path from 'path';
+import { SiteProperties } from "../../common";
 
-import { defaultSiteProperties } from '../../common';
+declare const __SITE_PROPERTIES__: SiteProperties;
 
-const commandInitSite = async () => {
-    const sitePropertiesFile = path.resolve(
-        process.cwd(),
-        '.confluence-website.json'
-    );
-    fs.writeFileSync(
-        sitePropertiesFile,
-        JSON.stringify(defaultSiteProperties, null, 2)
-    );
-};
-
-export { commandInitSite };
+const siteProperties: SiteProperties = __SITE_PROPERTIES__;
+export { siteProperties };

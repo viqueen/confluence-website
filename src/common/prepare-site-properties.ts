@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import fs from 'fs';
+import path from 'path';
+
 import type { GenerateThemeArgs } from '@atlaskit/atlassian-navigation';
 
 interface SiteProperties {
@@ -22,4 +25,27 @@ interface SiteProperties {
     theme: GenerateThemeArgs & { mode: 'light' | 'dark' };
 }
 
+const defaultSiteProperties: SiteProperties = {
+    title: 'confluence-website',
+    iconUrl: '',
+    name: '/website',
+    theme: {
+        name: 'confluence-website',
+        backgroundColor: 'rgb(0, 102, 68)',
+        highlightColor: '#FFFFFF',
+        mode: 'light'
+    }
+};
+
+const prepareSiteProperties = (): SiteProperties => {
+    const file = path.resolve(process.cwd(), '.confluence-website.json');
+    if (!fs.existsSync(file)) {
+        return defaultSiteProperties;
+    }
+    const data = fs.readFileSync(file, 'utf8');
+    const parsed = JSON.parse(data); // TODO: handle validation
+    return parsed as SiteProperties;
+};
+
 export type { SiteProperties };
+export { defaultSiteProperties, prepareSiteProperties };
