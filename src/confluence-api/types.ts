@@ -56,11 +56,20 @@ interface Content {
     title: string;
     body?: ContentBody;
     children?: ContentChildren;
+    metadata?: ContentMetadata;
 }
 
 interface ContentBody {
     atlas_doc_format: {
         value: string;
+    };
+}
+
+interface ContentMetadata {
+    properties: {
+        'emoji-title-published'?: {
+            value: string;
+        };
     };
 }
 

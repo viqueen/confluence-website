@@ -60,7 +60,8 @@ class ApiClient implements Api {
         const contentExpansions = [
             'content.body.atlas_doc_format',
             'content.children.page',
-            'content.children.attachment'
+            'content.children.attachment',
+            'content.metadata.properties.emoji_title_published'
         ];
         return this.client
             .get<SearchResponse>(`/wiki/rest/api/search`, {
@@ -74,11 +75,15 @@ class ApiClient implements Api {
     }
 
     async searchSpacePublicFolder(spaceKey: string): Promise<SearchResponse> {
+        const contentExpansions = [
+            'content.children.page',
+            'content.children.page.metadata.properties.emoji_title_published'
+        ];
         return this.client
             .get<SearchResponse>(`/wiki/rest/api/search`, {
                 params: {
                     cql: `space = "${spaceKey}" and type = "folder" and title = "public"`,
-                    expand: 'content.children.page'
+                    expand: contentExpansions.join(',')
                 }
             })
             .then((response) => response.data)

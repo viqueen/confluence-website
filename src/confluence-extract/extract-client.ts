@@ -76,11 +76,12 @@ class ExtractClient implements Extract {
         output: Output,
         publicPages: Content[]
     ): Promise<void> {
-        const pages = publicPages.map(({ id, title, type }) => ({
+        const pages = publicPages.map(({ id, title, type, metadata }) => ({
             id,
             title,
             type,
-            href: `/pages/${titleToPath(title)}/`
+            href: `/pages/${titleToPath(title)}/`,
+            emoji: metadata?.properties['emoji-title-published']?.value
         }));
         const navigation: LeftNavigation = { pages };
         fs.writeFileSync(
@@ -228,6 +229,10 @@ class ExtractClient implements Extract {
         output: Output,
         contentData: ContentData
     ): Promise<void> {
+        if (contentData.identifier.emoji) {
+            await this.fetchEmoji(output, contentData.identifier.emoji);
+        }
+
         const UUID_REGEX =
             /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 
@@ -235,25 +240,26 @@ class ExtractClient implements Extract {
             emoji: ({ attrs }: ADFEntity) => {
                 if (!attrs || !attrs.id) return;
                 if (UUID_REGEX.exec(attrs.id)) return;
-                const targetFile = path.resolve(
-                    output.site.assets.emojis,
-                    `${attrs.id}.png`
-                );
-                if (fs.existsSync(targetFile)) return;
-
-                const targetUrl = attrs.id.startsWith('atlassian')
-                    ? `/atlassian/${attrs.id.split('-')[1]}_64.png`
-                    : `/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/${attrs.id}.png`;
-
-                this.emojiClient
-                    .get(targetUrl, { responseType: 'stream' })
-                    .then((response) => ({ stream: response.data }))
-                    .then(({ stream }) => {
-                        const file = fs.createWriteStream(targetFile);
-                        return stream.pipe(file);
-                    });
+                this.fetchEmoji(output, attrs.id);
             }
         });
+    }
+
+    private async fetchEmoji(output: Output, id: string) {
+        const targetFile = path.resolve(output.site.assets.emojis, `${id}.png`);
+        if (fs.existsSync(targetFile)) return;
+
+        const targetUrl = id.startsWith('atlassian')
+            ? `/atlassian/${id.split('-')[1]}_64.png`
+            : `/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/${id}.png`;
+
+        this.emojiClient
+            .get(targetUrl, { responseType: 'stream' })
+            .then((response) => ({ stream: response.data }))
+            .then(({ stream }) => {
+                const file = fs.createWriteStream(targetFile);
+                return stream.pipe(file);
+            });
     }
 }
 

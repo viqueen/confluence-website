@@ -29,11 +29,13 @@ const mapContentToContentData = (
     }
     const childPages = content.children?.page.results || [];
     const attachments = content.children?.attachment.results || [];
+    const emoji = content.metadata?.properties['emoji-title-published']?.value;
     return {
         identifier: {
             id: content.id,
             title: content.title,
-            type: content.type
+            type: content.type,
+            emoji
         },
         body: scrubContent(environment, contentBody),
         childPages: childPages.map(({ id, title, type }) => ({

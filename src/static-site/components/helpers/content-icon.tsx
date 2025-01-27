@@ -21,6 +21,18 @@ import QuotationMarkIcon from "@atlaskit/icon/core/quotation-mark";
 import { ContentIdentifier } from "../../../confluence-extract";
 
 const ContentIcon = ({ identifier }: { identifier: ContentIdentifier }) => {
+  if (identifier.emoji) {
+    return (
+      <span>
+        <img
+          alt={identifier.emoji}
+          src={`/assets/emojis/${identifier.emoji}.png`}
+          height={24}
+          width={24}
+        />
+      </span>
+    );
+  }
   switch (identifier.type) {
     case "page":
       return <PageIcon label={identifier.title} />;
