@@ -1,44 +1,15 @@
-## typescript-package
+## confluence-website
 
-Template for building node packages using Typescript
+### install it
 
-### environment
-
-- **[nvm](https://github.com/nvm-sh/nvm)** to manage node versions.
+- with **npm**
 
 ```bash
-brew install nvm
+npm install @labset/confluence-website --save-dev
 ```
 
-- install node version
+- with **yarn**
 
 ```bash
-nvm install
-```
-
-### house-keeping
-
-- build it
-
-```bash
-npm run build
-```
-
-- format it
-
-```bash
-npm run  format
-```
-
-- lint it
-
-```bash
-npm run lint
-npm run lint --fix
-```
-
-- test it
-
-```bash
-npm test
+yarn add @labset/confluence-website -D
 ```

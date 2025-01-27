@@ -1,14 +1,13 @@
 {
-  "name": "typescript-package",
+  "name": "@labset/confluence-website",
   "version": "0.0.0",
-  "description": "typescript package",
-  "main": "index.js",
-  "repository": "git@github.com:viqueen/typescript-package.git",
+  "description": "confluence website builder",
+  "repository": "git@github.com:viqueen/confluence-website.git",
   "author": "Hasnae R. <>",
   "license": "Apache-2.0",
-  "private": true,
   "files": [
-    "dist"
+    "dist",
+    "package-lock.json"
   ],
   "scripts": {
     "build": "tsc",
