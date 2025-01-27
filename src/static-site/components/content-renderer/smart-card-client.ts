@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 import { CardClient } from "@atlaskit/link-provider";
+import axios from "axios";
 import { JsonLd } from "json-ld-types";
 
+import { ContentData } from "../../../confluence-extract";
+
 class SimpleCardClient extends CardClient {
+  constructor(private readonly content: ContentData) {
+    super();
+  }
   async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
+    const cardHash = this.content.objects[url];
+    if (!cardHash) {
+      throw new Error("Invalid URL");
+    }
+    const { data } = await axios.get(`/assets/objects/${cardHash}.json`);
     return {
       meta: {
         access: "granted",
         visibility: "public",
       },
-      data: {
-        "@type": "Object",
-        "@context": {
-          "@vocab": "https://www.w3.org/ns/activitystreams#",
-          atlassian: "https://schema.atlassian.com/ns/vocabulary#",
-          schema: "http://schema.org/",
-        },
-        name: url,
-        url,
-      },
+      data,
     } as JsonLd.Response;
   }
 

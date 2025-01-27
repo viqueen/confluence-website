@@ -45,7 +45,8 @@ const mapContentToContentData = (
             fileId: extensions.fileId,
             mediaType: extensions.mediaType,
             downloadUrl: _links.download
-        }))
+        })),
+        objects: {}
     };
 };
 

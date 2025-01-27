@@ -27,6 +27,7 @@ import { titleToPath, toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
 import { rewriteUrl } from './helpers/rewrite-url';
+import { mapContentToContentData } from './mappers';
 import { saveContentData, saveContentTemplate } from './save-content';
 import { ContentData, Extract, LeftNavigation } from './types';
 
@@ -119,16 +120,15 @@ class ExtractClient implements Extract {
         if (!content) {
             throw Error('❌ content not found');
         }
-        await saveContentTemplate(environment, output, content, asHomepage);
-        const contentData = await saveContentData(
-            environment,
-            output,
-            content,
-            asHomepage
-        );
+        const contentData = mapContentToContentData(environment, content);
+
         await this.extractContentAttachments(output, content);
         await this.extractContentEmojis(output, contentData);
         await this.extractContentObjects(environment, output, contentData);
+
+        await saveContentTemplate(environment, output, contentData, asHomepage);
+        await saveContentData(output, contentData, asHomepage);
+
         return content;
     }
 
@@ -177,10 +177,13 @@ class ExtractClient implements Extract {
                 .createHash('sha512')
                 .update(definition.url)
                 .digest('hex');
+
             fs.writeFileSync(
                 path.resolve(output.site.assets.objects, `${urlHash}.json`),
                 JSON.stringify(definition)
             );
+
+            content.objects[definition.url] = urlHash;
         });
     }
 

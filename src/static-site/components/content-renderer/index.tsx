@@ -16,19 +16,19 @@
 import React from "react";
 import { IntlProvider } from "react-intl-next";
 
-import { CardClient, SmartCardProvider } from "@atlaskit/link-provider";
+import { SmartCardProvider } from "@atlaskit/link-provider";
 import { ReactRenderer } from "@atlaskit/renderer";
-import { JsonLd } from "json-ld-types";
 
 import { ContentData } from "../../../confluence-extract";
 
 import { dataProviders } from "./data-providers";
 import { extensionHandlers } from "./extension-handlers";
 import { MediaViewerProvider } from "./media-viewer-provider";
+import { SimpleCardClient } from "./smart-card-client";
 
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
-    <SmartCardProvider client={new SimpleCardClient()}>
+    <SmartCardProvider client={new SimpleCardClient(content)}>
       <IntlProvider locale="en">
         <MediaViewerProvider attachments={content.attachments ?? []}>
           <ReactRenderer
@@ -41,24 +41,5 @@ const ContentRenderer = ({ content }: { content: ContentData }) => {
     </SmartCardProvider>
   );
 };
-
-class SimpleCardClient extends CardClient {
-  async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
-    return {
-      meta: {
-        access: "granted",
-        visibility: "public",
-      },
-      data: {
-        name: url,
-        url,
-      },
-    } as JsonLd.Response;
-  }
-
-  async prefetchData(_url: string): Promise<JsonLd.Response | undefined> {
-    return undefined;
-  }
-}
 
 export { ContentRenderer };

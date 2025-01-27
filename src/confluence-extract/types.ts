@@ -41,6 +41,7 @@ interface ContentData {
     body: any;
     childPages: ContentIdentifier[];
     attachments: Attachment[];
+    objects: Record<string, string>;
 }
 
 interface NavigationItem extends ContentIdentifier {

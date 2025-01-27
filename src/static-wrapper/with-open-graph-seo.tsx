@@ -16,13 +16,13 @@
 import React from "react";
 
 import { Environment } from "../common";
-import { Content } from "../confluence-api";
+import { ContentData } from "../confluence-extract";
 
-const withOpenGraphSeo = (content: Content, environment: Environment) => {
+const withOpenGraphSeo = (environment: Environment, content: ContentData) => {
   return (
     <>
-      <meta name="og:title" content={content.title} />
-      <meta property="og:title" content={content.title} />
+      <meta name="og:title" content={content.identifier.title} />
+      <meta property="og:title" content={content.identifier.title} />
       {/*<meta name="og:description" content={content.excerpt} />*/}
       {/*<meta property="og:description" content={content.excerpt} />*/}
       <meta name="og:url" content={environment.TARGET_SITE} />

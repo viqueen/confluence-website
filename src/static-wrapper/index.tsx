@@ -16,19 +16,19 @@
 import React from "react";
 
 import { Environment } from "../common";
-import { Content } from "../confluence-api";
+import { ContentData } from "../confluence-extract";
 
 import { withOpenGraphSeo } from "./with-open-graph-seo";
 
-const StaticWrapper = (environment: Environment, content: Content) => {
+const StaticWrapper = (environment: Environment, content: ContentData) => {
   return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-        {withOpenGraphSeo(content, environment)}
-        <title>{content.title}</title>
+        {withOpenGraphSeo(environment, content)}
+        <title>{content.identifier.title}</title>
       </head>
       <body>
         <div id="root" />

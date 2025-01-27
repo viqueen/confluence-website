@@ -20,38 +20,34 @@ import ReactDOMServer from 'react-dom/server';
 
 import { Environment, Output } from '../common';
 import { titleToPath } from '../common/helpers';
-import { Content } from '../confluence-api';
 import { StaticWrapper } from '../static-wrapper';
 
-import { mapContentToContentData } from './mappers';
 import { ContentData } from './types';
 
 const saveContentData = async (
-    environment: Environment,
     output: Output,
-    content: Content,
+    contentData: ContentData,
     asHomepage: boolean
 ): Promise<ContentData> => {
-    const target = resolvePath(output, content, asHomepage, 'data');
-    const contentData = mapContentToContentData(environment, content);
+    const target = resolvePath(output, contentData, asHomepage, 'data');
     const asJson = JSON.stringify(contentData, null, 2);
     fs.mkdirSync(target, { recursive: true });
     fs.writeFileSync(path.resolve(target, 'data.json'), asJson);
-    symlinkForInternals(output, content, asHomepage);
+    symlinkForInternals(output, contentData, asHomepage);
     return contentData;
 };
 
 const symlinkForInternals = (
     output: Output,
-    content: Content,
+    content: ContentData,
     asHomepage: boolean
 ) => {
     if (asHomepage) return;
-    const directory = output.site[content.type];
-    const symlink = path.resolve(directory, `${content.id}`);
+    const directory = output.site[content.identifier.type];
+    const symlink = path.resolve(directory, `${content.identifier.id}`);
     if (fs.existsSync(symlink)) return;
     fs.symlinkSync(
-        path.resolve(directory, titleToPath(content.title)),
+        path.resolve(directory, titleToPath(content.identifier.title)),
         symlink
     );
 };
@@ -59,12 +55,12 @@ const symlinkForInternals = (
 const saveContentTemplate = async (
     environment: Environment,
     output: Output,
-    content: Content,
+    contentData: ContentData,
     asHomepage: boolean
 ) => {
-    const target = resolvePath(output, content, asHomepage, 'template');
+    const target = resolvePath(output, contentData, asHomepage, 'template');
     const indexHtml = ReactDOMServer.renderToStaticMarkup(
-        StaticWrapper(environment, content)
+        StaticWrapper(environment, contentData)
     );
     fs.mkdirSync(target, { recursive: true });
     fs.writeFileSync(path.resolve(target, 'index.html'), indexHtml);
@@ -72,7 +68,7 @@ const saveContentTemplate = async (
 
 const resolvePath = (
     output: Output,
-    content: Content,
+    content: ContentData,
     asHomepage: boolean,
     target: 'data' | 'template'
 ) => {
@@ -81,8 +77,8 @@ const resolvePath = (
             return path.resolve(output.site.home);
         }
         return path.resolve(
-            output.site[content.type],
-            titleToPath(content.title)
+            output.site[content.identifier.type],
+            titleToPath(content.identifier.title)
         );
     }
     if (target === 'template') {
@@ -90,8 +86,8 @@ const resolvePath = (
             return path.resolve(output.templates.home);
         }
         return path.resolve(
-            output.templates[content.type],
-            titleToPath(content.title)
+            output.templates[content.identifier.type],
+            titleToPath(content.identifier.title)
         );
     }
     throw Error('invalid target');
