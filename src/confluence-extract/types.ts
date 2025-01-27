@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Output } from '../common';
+import { Environment, Output } from '../common';
 
 interface Extract {
-    extractSpace(spaceKey: string, output: Output): Promise<void>;
+    extractSpace(
+        environment: Environment,
+        output: Output,
+        spaceKey: string
+    ): Promise<void>;
 }
 
 export type { Extract };

@@ -21,7 +21,6 @@ interface Environment {
     CONFLUENCE_USERNAME: string;
     CONFLUENCE_API_TOKEN: string;
     TARGET_SITE: string;
-    GOOGLE_ANALYTICS_TRACKING_ID?: string;
 }
 
 const prepareEnvironment = (): Environment => {
@@ -33,10 +32,7 @@ const prepareEnvironment = (): Environment => {
             parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME,
         CONFLUENCE_API_TOKEN:
             parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN,
-        TARGET_SITE: parsed.TARGET_SITE ?? process.env.TARGET_SITE,
-        GOOGLE_ANALYTICS_TRACKING_ID:
-            parsed.GOOGLE_ANALYTICS_TRACKING_ID ??
-            process.env.GOOGLE_ANALYTICS_TRACKING_ID
+        TARGET_SITE: parsed.TARGET_SITE ?? process.env.TARGET_SITE
     };
 };
 

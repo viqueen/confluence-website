@@ -28,7 +28,7 @@ const commandExtractSpace = async (
         apiToken: environment.CONFLUENCE_API_TOKEN
     });
     const client = new ExtractClient(api);
-    await client.extractSpace(spaceKey, output);
+    await client.extractSpace(environment, output, spaceKey);
 };
 
 export { commandExtractSpace };

@@ -26,8 +26,7 @@ const commandInitEnv = async () => {
         },
         { name: 'confluence username' },
         { name: 'confluence api token', hidden: true },
-        { name: 'target site' },
-        { name: 'google analytics tracking id' }
+        { name: 'target site' }
     ];
 
     start();

@@ -19,13 +19,15 @@ import path from 'path';
 interface Output {
     site: {
         home: string;
-        pages: string;
-        blogs: string;
+        page: string;
+        blogpost: string;
+        folder: string;
     };
     templates: {
         home: string;
-        pages: string;
-        blogs: string;
+        page: string;
+        blogpost: string;
+        folder: string;
     };
 }
 
@@ -51,13 +53,15 @@ const prepareOutput = (props: PrepareOutputProps): Output => {
     const output = {
         site: {
             home: siteOutput,
-            pages: path.resolve(siteOutput, 'pages'),
-            blogs: path.resolve(siteOutput, 'blogs')
+            page: path.resolve(siteOutput, 'pages'),
+            blogpost: path.resolve(siteOutput, 'blogs'),
+            folder: path.resolve(siteOutput, 'folders')
         },
         templates: {
             home: templatesOutput,
-            pages: path.resolve(templatesOutput, 'pages'),
-            blogs: path.resolve(templatesOutput, 'blogs')
+            page: path.resolve(templatesOutput, 'pages'),
+            blogpost: path.resolve(templatesOutput, 'blogs'),
+            folder: path.resolve(templatesOutput, 'folders')
         }
     };
     makeOutputDirectories(output);

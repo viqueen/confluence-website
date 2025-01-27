@@ -13,35 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Output } from '../common';
+import { Environment, Output } from '../common';
 import { Api, Content } from '../confluence-api';
 
+import { saveContentData, saveContentTemplate } from './save-content';
 import { Extract } from './types';
 
 class ExtractClient implements Extract {
     constructor(private readonly api: Api) {}
 
-    async extractSpace(spaceKey: string, output: Output): Promise<void> {
+    async extractSpace(
+        environment: Environment,
+        output: Output,
+        spaceKey: string
+    ): Promise<void> {
         console.info(`🪐 extract space: ${spaceKey}`);
         const space = await this.api.getSpace(spaceKey);
         const homepage = space.homepage;
         if (!homepage) {
             throw Error('❌ homepage not found');
         }
-        const publicFolder = await this.api.searchSpacePublicFolder(spaceKey);
-        if (!publicFolder.results[0].content) {
+        const response = await this.api.searchSpacePublicFolder(spaceKey);
+        const publicFolder = response.results[0]?.content;
+        if (!publicFolder) {
             throw Error('❌ public folder not found');
         }
 
         // extract homepage
-        await this.extractContent(homepage, output);
+        await this.extractContentItem(environment, output, homepage, true);
     }
 
-    private async extractContent(
-        content: Content,
-        _output: Output
+    private async extractContentItem(
+        environment: Environment,
+        output: Output,
+        contentItem: Content,
+        asHomepage: boolean
     ): Promise<void> {
-        console.info(`📄 extract content: ${content.title}`);
+        const response = await this.api.searchContent(contentItem.id);
+        const content = response.results[0]?.content;
+        if (!content) {
+            throw Error('❌ content not found');
+        }
+        await saveContentData(output, content, asHomepage);
+        await saveContentTemplate(environment, output, content, asHomepage);
     }
 }
 

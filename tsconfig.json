@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2017"
+    "target": "ES2017",
+    "jsx": "react"
   },
   "include": ["src"],
   "exclude": [
