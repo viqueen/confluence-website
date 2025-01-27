@@ -1,0 +1,11 @@
+{
+  "title": "confluence-website",
+  "iconUrl": "",
+  "name": "/website",
+  "theme": {
+    "name": "confluence-website",
+    "backgroundColor": "rgb(0, 102, 68)",
+    "highlightColor": "#FFFFFF",
+    "mode": "light"
+  }
+}

@@ -22,7 +22,8 @@ import { prepareEnvironment, prepareOutput } from '../common';
 import {
     commandBuildSpace,
     commandExtractSpace,
-    commandInitEnv
+    commandInitEnv,
+    commandInitSite
 } from './commands';
 
 const program = new Command();
@@ -40,8 +41,8 @@ withOptions('init-env', 'Configure environment variables').action(async () => {
 });
 
 // configure site properties
-withOptions('init-site', 'Configure site properties').action(() => {
-    console.log('Configuring site properties');
+withOptions('init-site', 'Configure site properties').action(async () => {
+    await commandInitSite();
 });
 
 // extract content from a space

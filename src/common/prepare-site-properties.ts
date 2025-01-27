@@ -13,6 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './prepare-output';
-export * from './prepare-environment';
-export * from './prepare-site-properties';
+import type { GenerateThemeArgs } from '@atlaskit/atlassian-navigation';
+
+interface SiteProperties {
+    title: string;
+    iconUrl: string;
+    name: string;
+    theme: GenerateThemeArgs & { mode: 'light' | 'dark' };
+}
+
+export type { SiteProperties };
