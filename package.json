@@ -29,6 +29,7 @@
     "@labset-eslint/eslint-plugin": "^1.2.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^22.0.0",
+    "@types/prompt": "^1.1.9",
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
     "eslint": "^9.0.0",
@@ -41,6 +42,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "commander": "^13.1.0"
+    "commander": "^13.1.0",
+    "prompt": "^1.3.0"
   }
 }

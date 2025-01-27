@@ -17,6 +17,8 @@
  */
 import { Command } from 'commander';
 
+import { initEnvCommand } from './init-env-command';
+
 const program = new Command();
 
 const withOptions = (cmd: string, description: string) => {
@@ -27,12 +29,12 @@ const withOptions = (cmd: string, description: string) => {
 };
 
 // configure environment variables
-withOptions('env', 'Configure environment variables').action(() => {
-    console.log('Configuring environment variables');
+withOptions('init-env', 'Configure environment variables').action(async () => {
+    await initEnvCommand();
 });
 
 // configure site properties
-withOptions('configure', 'Configure site properties').action(() => {
+withOptions('init-site', 'Configure site properties').action(() => {
     console.log('Configuring site properties');
 });
 

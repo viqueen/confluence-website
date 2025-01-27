@@ -18,7 +18,7 @@ yarn add @labset/confluence-website -D
 
 
 ```bash
-./node_modules/.bin/confluence-website env
+./node_modules/.bin/confluence-website init-env
 ```
 
 it creates a `.env` file with the following properties
@@ -30,7 +30,7 @@ it creates a `.env` file with the following properties
 - `GOOGLE_ANALYTICS_TRACKING_ID`: Google Analytics tracking id
 
 ```bash
-./node_modules/.bin/confluence-website configure
+./node_modules/.bin/confluence-website init-site
 ```
 
 it creates a `.confluence-website.json` file with the following configuration

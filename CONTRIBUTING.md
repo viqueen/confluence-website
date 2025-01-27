@@ -23,7 +23,7 @@ npm ci
 - configure your environment
 
 ```bash
-npm run cli -- env
+npm run cli -- init-env
 ```
 
 - extract and build your site
