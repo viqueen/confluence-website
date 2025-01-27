@@ -22,7 +22,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ["node_modules", "dist", "coverage", ".idea"],
+    ignores: ["node_modules", "dist", "coverage", ".idea", "output"],
   },
   ...fixupConfigRules(
     compat.extends(
