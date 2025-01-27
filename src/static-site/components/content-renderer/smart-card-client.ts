@@ -13,34 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { CardClient } from "@atlaskit/link-provider";
-import axios from "axios";
-import { JsonLd } from "json-ld-types";
+import { CardClient } from '@atlaskit/link-provider';
+import axios from 'axios';
+import { JsonLd } from 'json-ld-types';
 
-import { ContentData } from "../../../confluence-extract";
+import { ContentData } from '../../../confluence-extract';
 
 class SimpleCardClient extends CardClient {
-  constructor(private readonly content: ContentData) {
-    super();
-  }
-  async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
-    const cardHash = this.content.objects[url];
-    if (!cardHash) {
-      throw new Error("Invalid URL");
+    constructor(private readonly content: ContentData) {
+        super();
     }
-    const { data } = await axios.get(`/assets/objects/${cardHash}.json`);
-    return {
-      meta: {
-        access: "granted",
-        visibility: "public",
-      },
-      data,
-    } as JsonLd.Response;
-  }
+    async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
+        const cardHash = this.content.objects[url];
+        if (!cardHash) {
+            throw new Error('Invalid URL');
+        }
+        const { data } = await axios.get(`/assets/objects/${cardHash}.json`);
+        return {
+            meta: {
+                access: 'granted',
+                visibility: 'public'
+            },
+            data
+        } as JsonLd.Response;
+    }
 
-  async prefetchData(_url: string): Promise<JsonLd.Response | undefined> {
-    return undefined;
-  }
+    async prefetchData(_url: string): Promise<JsonLd.Response | undefined> {
+        return undefined;
+    }
 }
 
 export { SimpleCardClient };
