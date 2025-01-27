@@ -23,14 +23,26 @@ interface Extract {
     ): Promise<void>;
 }
 
-interface ContentData {
+interface ContentIdentifier {
     id: number;
-    type: 'page' | 'blogpost' | 'folder';
     title: string;
+    type: 'page' | 'blogpost' | 'folder';
+}
+
+interface ContentData {
+    identifier: ContentIdentifier;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
-    childPages: Array<{ id: number; title: string }>;
+    childPages: ContentIdentifier[];
+}
+
+interface NavigationItem extends ContentIdentifier {
+    href: string;
+}
+
+interface LeftNavigation {
+    pages: NavigationItem[];
 }
 
 export type { Extract };
-export type { ContentData };
+export type { ContentData, LeftNavigation, NavigationItem, ContentIdentifier };

@@ -28,14 +28,17 @@ const mapContentToContentData = (
         contentBody = JSON.parse(content.body.atlas_doc_format.value);
     }
     const childPages =
-        content.children?.page.results.map(({ id, title }) => ({
+        content.children?.page.results.map(({ id, title, type }) => ({
             id,
-            title
+            title,
+            type
         })) || [];
     return {
-        id: content.id,
-        title: content.title,
-        type: content.type,
+        identifier: {
+            id: content.id,
+            title: content.title,
+            type: content.type
+        },
         body: scrubContent(environment, contentBody),
         childPages
     };

@@ -15,19 +15,20 @@
  */
 import React from "react";
 
-import Heading from "@atlaskit/heading";
+import PageIcon from "@atlaskit/icon/core/page";
+import QuotationMarkIcon from "@atlaskit/icon/core/quotation-mark";
 
-import { ContentData } from "../../../confluence-extract";
-import "./content-header.css";
-import { ContentIcon } from "../helpers";
+import { ContentIdentifier } from "../../../confluence-extract";
 
-const ContentHeader = ({ content }: { content: ContentData }) => {
-  return (
-    <div className={"content-header"}>
-      <ContentIcon identifier={content.identifier} />
-      <Heading size={"large"}>{content.identifier.title}</Heading>
-    </div>
-  );
+const ContentIcon = ({ identifier }: { identifier: ContentIdentifier }) => {
+  switch (identifier.type) {
+    case "page":
+      return <PageIcon label={identifier.title} />;
+    case "blogpost":
+      return <QuotationMarkIcon label={identifier.title} />;
+    default:
+      return null;
+  }
 };
 
-export { ContentHeader };
+export { ContentIcon };

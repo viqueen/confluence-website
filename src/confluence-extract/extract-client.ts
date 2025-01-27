@@ -22,10 +22,11 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 import { Environment, Output } from '../common';
+import { titleToPath } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
 import { saveContentData, saveContentTemplate } from './save-content';
-import { ContentData, Extract } from './types';
+import { ContentData, Extract, LeftNavigation } from './types';
 
 class ExtractClient implements Extract {
     private readonly emojiClient: AxiosInstance;
@@ -60,6 +61,28 @@ class ExtractClient implements Extract {
             environment,
             output,
             publicFolder.children?.page.results ?? []
+        );
+        // extract left navigation
+        await this.extractLeftNavigation(
+            output,
+            publicFolder.children?.page.results ?? []
+        );
+    }
+
+    private async extractLeftNavigation(
+        output: Output,
+        publicPages: Content[]
+    ): Promise<void> {
+        const pages = publicPages.map(({ id, title, type }) => ({
+            id,
+            title,
+            type,
+            href: `/pages/${titleToPath(title)}/`
+        }));
+        const navigation: LeftNavigation = { pages };
+        fs.writeFileSync(
+            path.resolve(output.site.home, 'left-navigation.json'),
+            JSON.stringify(navigation, null, 2)
         );
     }
 

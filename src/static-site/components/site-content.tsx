@@ -36,7 +36,7 @@ const SiteContent = () => {
     };
     fetchData()
       .then((data) => {
-        document.title = `${siteProperties.name} - ${data.title}`;
+        document.title = `${siteProperties.name} - ${data.identifier.title}`;
         setContent(data);
         setLoading(false);
       })

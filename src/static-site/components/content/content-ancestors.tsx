@@ -18,7 +18,7 @@ import React from "react";
 import { ContentData } from "../../../confluence-extract";
 
 const ContentAncestors = ({ content }: { content: ContentData }) => {
-  if (content.type === "blogpost") return <></>;
+  if (content.identifier.type === "blogpost") return <></>;
   return <div></div>;
 };
 

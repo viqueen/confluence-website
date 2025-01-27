@@ -13,21 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
-
-import Heading from "@atlaskit/heading";
-
-import { ContentData } from "../../../confluence-extract";
-import "./content-header.css";
-import { ContentIcon } from "../helpers";
-
-const ContentHeader = ({ content }: { content: ContentData }) => {
-  return (
-    <div className={"content-header"}>
-      <ContentIcon identifier={content.identifier} />
-      <Heading size={"large"}>{content.identifier.title}</Heading>
-    </div>
-  );
-};
-
-export { ContentHeader };
+export * from './content-icon';
