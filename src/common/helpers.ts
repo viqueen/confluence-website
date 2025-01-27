@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './extract-client';
-export * from './types';
-export * from './save-content';
+const titleToPath = (title: string): string => {
+    const noSpaces = title.replace(/\s+/g, '-');
+    return noSpaces.replace(/[,?]/g, '');
+};
+
+export { titleToPath };

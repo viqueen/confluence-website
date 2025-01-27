@@ -23,21 +23,21 @@ const mapContentToContentData = (
     environment: Environment,
     content: Content
 ): ContentData => {
-    if (!content.body?.atlas_doc_format) {
-        return {
-            id: content.id,
-            title: content.title,
-            type: content.type,
-            body: emptyContentBody
-        };
+    let contentBody = emptyContentBody;
+    if (content.body && content.body.atlas_doc_format) {
+        contentBody = JSON.parse(content.body.atlas_doc_format.value);
     }
-    const body = JSON.parse(content.body.atlas_doc_format.value);
-    const scrubbed = scrubContent(environment, body);
+    const childPages =
+        content.children?.page.results.map(({ id, title }) => ({
+            id,
+            title
+        })) || [];
     return {
         id: content.id,
         title: content.title,
         type: content.type,
-        body: scrubbed
+        body: scrubContent(environment, contentBody),
+        childPages
     };
 };
 

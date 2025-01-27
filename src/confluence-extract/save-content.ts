@@ -19,6 +19,7 @@ import path from 'path';
 import ReactDOMServer from 'react-dom/server';
 
 import { Environment, Output } from '../common';
+import { titleToPath } from '../common/helpers';
 import { Content } from '../confluence-api';
 import { StaticWrapper } from '../static-wrapper';
 
@@ -36,7 +37,23 @@ const saveContentData = async (
     const asJson = JSON.stringify(contentData, null, 2);
     fs.mkdirSync(target, { recursive: true });
     fs.writeFileSync(path.resolve(target, 'data.json'), asJson);
+    symlinkForInternals(output, content, asHomepage);
     return contentData;
+};
+
+const symlinkForInternals = (
+    output: Output,
+    content: Content,
+    asHomepage: boolean
+) => {
+    if (asHomepage) return;
+    const directory = output.site[content.type];
+    const symlink = path.resolve(directory, `${content.id}`);
+    if (fs.existsSync(symlink)) return;
+    fs.symlinkSync(
+        path.resolve(directory, titleToPath(content.title)),
+        symlink
+    );
 };
 
 const saveContentTemplate = async (
@@ -78,11 +95,6 @@ const resolvePath = (
         );
     }
     throw Error('invalid target');
-};
-
-const titleToPath = (title: string): string => {
-    const noSpaces = title.replace(/\s+/g, '-');
-    return noSpaces.replace(/[,?]/g, '');
 };
 
 export { saveContentData, saveContentTemplate };

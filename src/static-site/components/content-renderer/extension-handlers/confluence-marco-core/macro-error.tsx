@@ -13,6 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './extract-client';
-export * from './types';
-export * from './save-content';
+import React from "react";
+
+import Flag from "@atlaskit/flag";
+import ErrorIcon from "@atlaskit/icon/core/error";
+
+const MacroError = () => {
+  return (
+    <Flag
+      id="macro-error"
+      appearance="error"
+      title="We couldn't load the macro"
+      icon={<ErrorIcon label="Error" />}
+    />
+  );
+};
+
+export { MacroError };

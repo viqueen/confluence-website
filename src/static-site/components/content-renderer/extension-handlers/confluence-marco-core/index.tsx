@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React from "react";
+
 import type {
   ExtensionParams,
   Parameters,
@@ -20,9 +22,22 @@ import type {
 
 import { ContentData } from "../../../../../confluence-extract";
 
-const confluenceMacroCore = (_content: ContentData) => {
-  return (_ext: ExtensionParams<Parameters>) => {
-    return null;
+import { ChildrenMacro } from "./children-macro";
+
+const confluenceMacroCore = (content: ContentData) => {
+  return (ext: ExtensionParams<Parameters>) => {
+    switch (ext.extensionKey) {
+      case "children":
+        return (
+          <ChildrenMacro
+            content={content}
+            parent={ext.parameters?.macroParams.page?.value}
+          />
+        );
+      default:
+        console.warn("** missing extension handler", ext.extensionKey, ext);
+        return null;
+    }
   };
 };
 

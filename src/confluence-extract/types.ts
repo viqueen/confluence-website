@@ -29,6 +29,7 @@ interface ContentData {
     title: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
+    childPages: Array<{ id: number; title: string }>;
 }
 
 export type { Extract };

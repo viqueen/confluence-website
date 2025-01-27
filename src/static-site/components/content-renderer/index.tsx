@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
+import { IntlProvider } from "react-intl-next";
 
 import { CardClient, SmartCardProvider } from "@atlaskit/link-provider";
 import { ReactRenderer } from "@atlaskit/renderer";
@@ -27,11 +28,13 @@ import { extensionHandlers } from "./extension-handlers";
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
     <SmartCardProvider client={new SimpleCardClient()}>
-      <ReactRenderer
-        document={content.body}
-        dataProviders={dataProviders()}
-        extensionHandlers={extensionHandlers(content)}
-      />
+      <IntlProvider locale="en">
+        <ReactRenderer
+          document={content.body}
+          dataProviders={dataProviders()}
+          extensionHandlers={extensionHandlers(content)}
+        />
+      </IntlProvider>
     </SmartCardProvider>
   );
 };
