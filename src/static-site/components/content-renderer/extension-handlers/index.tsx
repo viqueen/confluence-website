@@ -16,10 +16,12 @@
 import { ContentData } from "../../../../confluence-extract";
 
 import { confluenceMacroCore } from "./confluence-marco-core";
+import { viqueenMedia } from "./viqueen-media";
 
 const extensionHandlers = (content: ContentData) => {
   return {
     "com.atlassian.confluence.macro.core": confluenceMacroCore(content),
+    "org.viqueen.media": viqueenMedia,
   };
 };
 

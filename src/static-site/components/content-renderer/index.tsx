@@ -24,16 +24,19 @@ import { ContentData } from "../../../confluence-extract";
 
 import { dataProviders } from "./data-providers";
 import { extensionHandlers } from "./extension-handlers";
+import { MediaViewerProvider } from "./media-viewer-provider";
 
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
     <SmartCardProvider client={new SimpleCardClient()}>
       <IntlProvider locale="en">
-        <ReactRenderer
-          document={content.body}
-          dataProviders={dataProviders()}
-          extensionHandlers={extensionHandlers(content)}
-        />
+        <MediaViewerProvider attachments={content.attachments ?? []}>
+          <ReactRenderer
+            document={content.body}
+            dataProviders={dataProviders()}
+            extensionHandlers={extensionHandlers(content)}
+          />
+        </MediaViewerProvider>
       </IntlProvider>
     </SmartCardProvider>
   );

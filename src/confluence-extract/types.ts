@@ -29,11 +29,18 @@ interface ContentIdentifier {
     type: 'page' | 'blogpost' | 'folder';
 }
 
+interface Attachment {
+    fileId: string;
+    mediaType: string;
+    downloadUrl: string;
+}
+
 interface ContentData {
     identifier: ContentIdentifier;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
     childPages: ContentIdentifier[];
+    attachments: Attachment[];
 }
 
 interface NavigationItem extends ContentIdentifier {
@@ -45,4 +52,10 @@ interface LeftNavigation {
 }
 
 export type { Extract };
-export type { ContentData, LeftNavigation, NavigationItem, ContentIdentifier };
+export type {
+    ContentData,
+    LeftNavigation,
+    NavigationItem,
+    ContentIdentifier,
+    Attachment
+};

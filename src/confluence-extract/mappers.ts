@@ -27,12 +27,8 @@ const mapContentToContentData = (
     if (content.body && content.body.atlas_doc_format) {
         contentBody = JSON.parse(content.body.atlas_doc_format.value);
     }
-    const childPages =
-        content.children?.page.results.map(({ id, title, type }) => ({
-            id,
-            title,
-            type
-        })) || [];
+    const childPages = content.children?.page.results || [];
+    const attachments = content.children?.attachment.results || [];
     return {
         identifier: {
             id: content.id,
@@ -40,7 +36,16 @@ const mapContentToContentData = (
             type: content.type
         },
         body: scrubContent(environment, contentBody),
-        childPages
+        childPages: childPages.map(({ id, title, type }) => ({
+            id,
+            title,
+            type
+        })),
+        attachments: attachments.map(({ extensions, _links }) => ({
+            fileId: extensions.fileId,
+            mediaType: extensions.mediaType,
+            downloadUrl: _links.download
+        }))
     };
 };
 

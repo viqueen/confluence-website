@@ -132,8 +132,7 @@ class ExtractClient implements Extract {
     private async extractContentAttachments(
         output: Output,
         content: Content
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ): Promise<any> {
+    ): Promise<void[]> {
         const attachments = content.children?.attachment?.results ?? [];
         return Promise.all(
             attachments.map(async (attachment) => {
