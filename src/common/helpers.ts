@@ -18,4 +18,11 @@ const titleToPath = (title: string): string => {
     return noSpaces.replace(/[,?]/g, '');
 };
 
-export { titleToPath };
+const toExtension = (mediaType: string) => {
+    const matcher = RegExp(/image\/(?<ext>jpeg|jpg|png)/).exec(mediaType);
+    const ext = matcher?.groups?.ext;
+    if (ext) return `.${ext}`;
+    return '';
+};
+
+export { titleToPath, toExtension };

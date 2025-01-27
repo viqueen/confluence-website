@@ -22,7 +22,7 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 import { Environment, Output } from '../common';
-import { titleToPath } from '../common/helpers';
+import { titleToPath, toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
 import { saveContentData, saveContentTemplate } from './save-content';
@@ -124,11 +124,50 @@ class ExtractClient implements Extract {
             content,
             asHomepage
         );
-        await this.extractEmojis(output, contentData);
+        await this.extractContentAttachments(output, content);
+        await this.extractContentEmojis(output, contentData);
         return content;
     }
 
-    private async extractEmojis(
+    private async extractContentAttachments(
+        output: Output,
+        content: Content
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): Promise<any> {
+        const attachments = content.children?.attachment?.results ?? [];
+        return Promise.all(
+            attachments.map(async (attachment) => {
+                return this.api
+                    .getAttachmentData({
+                        prefix: '/wiki',
+                        targetUrl: attachment._links.download
+                    })
+                    .then(({ stream }) => {
+                        const fileExtension = toExtension(
+                            attachment.extensions.mediaType
+                        );
+                        const filePath = path.resolve(
+                            output.site.attachments,
+                            `${attachment.extensions.fileId}.${fileExtension}`
+                        );
+                        if (fileExtension !== '') {
+                            const symlink = path.resolve(
+                                output.site.attachments,
+                                attachment.extensions.fileId
+                            );
+                            if (!fs.existsSync(symlink)) {
+                                fs.symlinkSync(filePath, symlink);
+                            }
+                        }
+                        const file = fs.createWriteStream(filePath);
+                        return stream.pipe(file);
+                    })
+                    .catch(console.error);
+            })
+        );
+    }
+
+    private async extractContentEmojis(
         output: Output,
         contentData: ContentData
     ): Promise<void> {

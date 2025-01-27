@@ -18,7 +18,7 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 import { axiosErrorHandler } from './axios-error-handler';
-import { Api, SearchResponse, Space } from './types';
+import { Api, AttachmentData, SearchResponse, Space } from './types';
 
 interface ApiClientProps {
     baseUrl: string;
@@ -51,11 +51,16 @@ class ApiClient implements Api {
     }
 
     async searchContent(contentId: number): Promise<SearchResponse> {
+        const contentExpansions = [
+            'content.body.atlas_doc_format',
+            'content.children.page',
+            'content.children.attachment'
+        ];
         return this.client
             .get<SearchResponse>(`/wiki/rest/api/search`, {
                 params: {
                     cql: `id = ${contentId}`,
-                    expand: 'content.body.atlas_doc_format,content.children.page'
+                    expand: contentExpansions.join(',')
                 }
             })
             .then((response) => response.data)
@@ -72,6 +77,19 @@ class ApiClient implements Api {
             })
             .then((response) => response.data)
             .catch(axiosErrorHandler);
+    }
+
+    async getAttachmentData({
+        prefix,
+        targetUrl
+    }: {
+        prefix: string;
+        targetUrl: string;
+    }): Promise<AttachmentData> {
+        const { data } = await this.client
+            .get(`${prefix}${targetUrl}`, { responseType: 'stream' })
+            .catch(axiosErrorHandler);
+        return { stream: data };
     }
 }
 

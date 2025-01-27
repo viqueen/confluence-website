@@ -17,6 +17,15 @@ interface Api {
     getSpace(spaceKey: string): Promise<Space>;
     searchSpacePublicFolder(spaceKey: string): Promise<SearchResponse>;
     searchContent(contentId: number): Promise<SearchResponse>;
+    getAttachmentData(input: {
+        prefix: string;
+        targetUrl: string;
+    }): Promise<AttachmentData>;
+}
+
+interface AttachmentData {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    stream: any;
 }
 
 interface Space {
@@ -40,9 +49,22 @@ interface ContentBody {
     };
 }
 
+interface File {
+    extensions: {
+        fileId: string;
+        mediaType: string;
+    };
+    _links: {
+        download: string;
+    };
+}
+
 interface ContentChildren {
     page: {
         results: Content[];
+    };
+    attachment: {
+        results: File[];
     };
 }
 
@@ -56,6 +78,7 @@ interface SearchResultItem {
 
 export type {
     Api,
+    AttachmentData,
     Space,
     Content,
     ContentBody,

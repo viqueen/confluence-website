@@ -22,6 +22,7 @@ interface Output {
         page: string;
         blogpost: string;
         folder: string;
+        attachments: string;
         assets: {
             emojis: string;
         };
@@ -59,6 +60,7 @@ const prepareOutput = (props: PrepareOutputProps): Output => {
             page: path.resolve(siteOutput, 'pages'),
             blogpost: path.resolve(siteOutput, 'blogs'),
             folder: path.resolve(siteOutput, 'folders'),
+            attachments: path.resolve(siteOutput, 'attachments'),
             assets: {
                 emojis: path.resolve(siteOutput, 'assets', 'emojis')
             }
