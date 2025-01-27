@@ -55,6 +55,29 @@ class ExtractClient implements Extract {
 
         // extract homepage
         await this.extractContentItem(environment, output, homepage, true);
+        // extract public folder
+        await this.extractPageHierarchies(
+            environment,
+            output,
+            publicFolder.children?.page.results ?? []
+        );
+    }
+
+    private async extractPageHierarchies(
+        environment: Environment,
+        output: Output,
+        pages: Content[]
+    ): Promise<void> {
+        for (const page of pages) {
+            const parent = await this.extractContentItem(
+                environment,
+                output,
+                page,
+                false
+            );
+            const childPages = parent.children?.page?.results ?? [];
+            await this.extractPageHierarchies(environment, output, childPages);
+        }
     }
 
     private async extractContentItem(
@@ -62,7 +85,10 @@ class ExtractClient implements Extract {
         output: Output,
         contentItem: Content,
         asHomepage: boolean
-    ): Promise<void> {
+    ): Promise<Content> {
+        console.info(
+            `📄 extract content: ${contentItem.id} - ${contentItem.title}`
+        );
         const response = await this.api.searchContent(contentItem.id);
         const content = response.results[0]?.content;
         if (!content) {
@@ -76,6 +102,7 @@ class ExtractClient implements Extract {
             asHomepage
         );
         await this.extractEmojis(output, contentData);
+        return content;
     }
 
     private async extractEmojis(
