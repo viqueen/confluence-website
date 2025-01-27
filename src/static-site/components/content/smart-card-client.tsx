@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import { CardClient } from "@atlaskit/link-provider";
+import { JsonLd } from "json-ld-types";
 
-import { SmartCardProvider } from "@atlaskit/link-provider";
-import { ReactRenderer } from "@atlaskit/renderer";
+class SimpleCardClient extends CardClient {
+  async fetchData(_url: string, _force?: boolean): Promise<JsonLd.Response> {
+    return {
+      meta: {
+        access: "granted",
+        visibility: "public",
+      },
+      data: {},
+    } as JsonLd.Response;
+  }
 
-import { ContentData } from "../../../confluence-extract";
+  async prefetchData(_url: string): Promise<JsonLd.Response | undefined> {
+    return undefined;
+  }
+}
 
-import { SimpleCardClient } from "./smart-card-client";
-
-const ContentRenderer = ({ content }: { content: ContentData }) => {
-  return (
-    <SmartCardProvider client={new SimpleCardClient()}>
-      <ReactRenderer document={content.body} />
-    </SmartCardProvider>
-  );
-};
-
-export { ContentRenderer };
+export { SimpleCardClient };

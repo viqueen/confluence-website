@@ -51,6 +51,7 @@
     "@atlaskit/flag": "^15.8.14",
     "@atlaskit/heading": "^4.0.1",
     "@atlaskit/icon": "^23.4.1",
+    "@atlaskit/link-provider": "^1.18.0",
     "@atlaskit/page": "^12.6.2",
     "@atlaskit/page-layout": "^3.11.7",
     "@atlaskit/renderer": "^112.9.0",
