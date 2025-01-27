@@ -17,7 +17,7 @@
  */
 import { Command } from 'commander';
 
-import { initEnvCommand } from './init-env-command';
+import { initEnvCommand } from './commands';
 
 const program = new Command();
 
