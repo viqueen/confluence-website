@@ -17,13 +17,22 @@ import { CardClient } from "@atlaskit/link-provider";
 import { JsonLd } from "json-ld-types";
 
 class SimpleCardClient extends CardClient {
-  async fetchData(_url: string, _force?: boolean): Promise<JsonLd.Response> {
+  async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
     return {
       meta: {
         access: "granted",
         visibility: "public",
       },
-      data: {},
+      data: {
+        "@type": "Object",
+        "@context": {
+          "@vocab": "https://www.w3.org/ns/activitystreams#",
+          atlassian: "https://schema.atlassian.com/ns/vocabulary#",
+          schema: "http://schema.org/",
+        },
+        name: url,
+        url,
+      },
     } as JsonLd.Response;
   }
 

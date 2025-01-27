@@ -54,7 +54,7 @@ class ExtractClient implements Extract {
         if (!content) {
             throw Error('❌ content not found');
         }
-        await saveContentData(output, content, asHomepage);
+        await saveContentData(environment, output, content, asHomepage);
         await saveContentTemplate(environment, output, content, asHomepage);
     }
 }

@@ -44,6 +44,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@atlaskit/adf-utils": "^19.17.0",
     "@atlaskit/app-provider": "^1.6.1",
     "@atlaskit/atlassian-navigation": "^4.10.3",
     "@atlaskit/breadcrumbs": "^14.0.5",

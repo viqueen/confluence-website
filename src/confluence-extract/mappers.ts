@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Environment } from '../common';
 import { Content } from '../confluence-api';
 
+import { scrubContent } from './helpers/adf-processor';
 import { ContentData } from './types';
 
-const mapContentToContentData = (content: Content): ContentData => {
+const mapContentToContentData = (
+    environment: Environment,
+    content: Content
+): ContentData => {
     if (!content.body?.atlas_doc_format) {
         return {
             id: content.id,
@@ -26,11 +31,13 @@ const mapContentToContentData = (content: Content): ContentData => {
             body: emptyContentBody
         };
     }
+    const body = JSON.parse(content.body.atlas_doc_format.value);
+    const scrubbed = scrubContent(environment, body);
     return {
         id: content.id,
         title: content.title,
         type: content.type,
-        body: JSON.parse(content.body?.atlas_doc_format.value)
+        body: scrubbed
     };
 };
 

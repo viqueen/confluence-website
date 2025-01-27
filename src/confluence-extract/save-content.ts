@@ -25,12 +25,13 @@ import { StaticWrapper } from '../static-wrapper';
 import { mapContentToContentData } from './mappers';
 
 const saveContentData = async (
+    environment: Environment,
     output: Output,
     content: Content,
     asHomepage: boolean
 ) => {
     const target = resolvePath(output, content, asHomepage, 'data');
-    const contentData = mapContentToContentData(content);
+    const contentData = mapContentToContentData(environment, content);
     const asJson = JSON.stringify(contentData, null, 2);
     fs.mkdirSync(target, { recursive: true });
     fs.writeFileSync(path.resolve(target, 'data.json'), asJson);
