@@ -23,18 +23,20 @@ import { Content } from '../confluence-api';
 import { StaticWrapper } from '../static-wrapper';
 
 import { mapContentToContentData } from './mappers';
+import { ContentData } from './types';
 
 const saveContentData = async (
     environment: Environment,
     output: Output,
     content: Content,
     asHomepage: boolean
-) => {
+): Promise<ContentData> => {
     const target = resolvePath(output, content, asHomepage, 'data');
     const contentData = mapContentToContentData(environment, content);
     const asJson = JSON.stringify(contentData, null, 2);
     fs.mkdirSync(target, { recursive: true });
     fs.writeFileSync(path.resolve(target, 'data.json'), asJson);
+    return contentData;
 };
 
 const saveContentTemplate = async (

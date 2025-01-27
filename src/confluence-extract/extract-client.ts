@@ -13,14 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import fs from 'fs';
+import path from 'path';
+
+import { traverse } from '@atlaskit/adf-utils/traverse';
+import { ADFEntity } from '@atlaskit/adf-utils/types';
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+
 import { Environment, Output } from '../common';
 import { Api, Content } from '../confluence-api';
 
 import { saveContentData, saveContentTemplate } from './save-content';
-import { Extract } from './types';
+import { ContentData, Extract } from './types';
 
 class ExtractClient implements Extract {
-    constructor(private readonly api: Api) {}
+    private readonly emojiClient: AxiosInstance;
+    constructor(private readonly api: Api) {
+        this.emojiClient = axios.create({
+            baseURL:
+                'https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net'
+        });
+    }
 
     async extractSpace(
         environment: Environment,
@@ -54,8 +68,46 @@ class ExtractClient implements Extract {
         if (!content) {
             throw Error('❌ content not found');
         }
-        await saveContentData(environment, output, content, asHomepage);
         await saveContentTemplate(environment, output, content, asHomepage);
+        const contentData = await saveContentData(
+            environment,
+            output,
+            content,
+            asHomepage
+        );
+        await this.extractEmojis(output, contentData);
+    }
+
+    private async extractEmojis(
+        output: Output,
+        contentData: ContentData
+    ): Promise<void> {
+        const UUID_REGEX =
+            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+
+        traverse(contentData.body, {
+            emoji: ({ attrs }: ADFEntity) => {
+                if (!attrs || !attrs.id) return;
+                if (UUID_REGEX.exec(attrs.id)) return;
+                const targetFile = path.resolve(
+                    output.site.assets.emojis,
+                    `${attrs.id}.png`
+                );
+                if (fs.existsSync(targetFile)) return;
+
+                const targetUrl = attrs.id.startsWith('atlassian')
+                    ? `/atlassian/${attrs.id.split('-')[1]}_64.png`
+                    : `/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/${attrs.id}.png`;
+
+                this.emojiClient
+                    .get(targetUrl, { responseType: 'stream' })
+                    .then((response) => ({ stream: response.data }))
+                    .then(({ stream }) => {
+                        const file = fs.createWriteStream(targetFile);
+                        return stream.pipe(file);
+                    });
+            }
+        });
     }
 }
 

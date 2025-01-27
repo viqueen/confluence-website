@@ -18,12 +18,12 @@ import React from "react";
 import { Grid, GridColumn } from "@atlaskit/page";
 
 import { ContentData } from "../../../confluence-extract";
+import { ContentRenderer } from "../content-renderer";
 
 import { ContentAncestors } from "./content-ancestors";
 import { ContentByLine } from "./content-by-line";
 import { ContentCover } from "./content-cover";
 import { ContentHeader } from "./content-header";
-import { ContentRenderer } from "./content-renderer";
 
 const ContentLayout = ({ content }: { content: ContentData }) => {
   return (

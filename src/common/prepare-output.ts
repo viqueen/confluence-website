@@ -22,6 +22,9 @@ interface Output {
         page: string;
         blogpost: string;
         folder: string;
+        assets: {
+            emojis: string;
+        };
     };
     templates: {
         home: string;
@@ -55,7 +58,10 @@ const prepareOutput = (props: PrepareOutputProps): Output => {
             home: siteOutput,
             page: path.resolve(siteOutput, 'pages'),
             blogpost: path.resolve(siteOutput, 'blogs'),
-            folder: path.resolve(siteOutput, 'folders')
+            folder: path.resolve(siteOutput, 'folders'),
+            assets: {
+                emojis: path.resolve(siteOutput, 'assets', 'emojis')
+            }
         },
         templates: {
             home: templatesOutput,

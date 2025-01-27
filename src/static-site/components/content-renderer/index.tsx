@@ -15,19 +15,27 @@
  */
 import React from "react";
 
+import { ProviderFactory } from "@atlaskit/editor-common/provider-factory";
 import { SmartCardProvider } from "@atlaskit/link-provider";
 import { ReactRenderer } from "@atlaskit/renderer";
 
 import { ContentData } from "../../../confluence-extract";
 
+import { emojiProvider } from "./emoji-provider";
 import { SimpleCardClient } from "./smart-card-client";
 
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
     <SmartCardProvider client={new SimpleCardClient()}>
-      <ReactRenderer document={content.body} />
+      <ReactRenderer document={content.body} dataProviders={dataProviders()} />
     </SmartCardProvider>
   );
+};
+
+const dataProviders = () => {
+  return ProviderFactory.create({
+    emojiProvider: emojiProvider(),
+  });
 };
 
 export { ContentRenderer };
