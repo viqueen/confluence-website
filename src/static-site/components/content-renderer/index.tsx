@@ -26,6 +26,8 @@ import { extensionHandlers } from "./extension-handlers";
 import { MediaViewerProvider } from "./media-viewer-provider";
 import { SimpleCardClient } from "./smart-card-client";
 
+import "./content-renderer.css";
+
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
     <SmartCardProvider client={new SimpleCardClient(content)}>
