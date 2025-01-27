@@ -1,13 +1,13 @@
 .content-header {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .content-header > span {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .content-header h2 {
-    display: inline-block;
+  display: inline-block;
 }

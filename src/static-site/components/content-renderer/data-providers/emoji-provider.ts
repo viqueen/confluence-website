@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 import type {
-  EmojiId,
-  EmojiProvider,
-  OptionalEmojiDescriptionWithVariations,
-} from "@atlaskit/emoji";
+    EmojiId,
+    EmojiProvider,
+    OptionalEmojiDescriptionWithVariations
+} from '@atlaskit/emoji';
 
 const emojiProvider = async () => {
-  const fetchByEmojiId = async (
-    emojiId: EmojiId,
-  ): Promise<OptionalEmojiDescriptionWithVariations> => {
-    return {
-      ...emojiId,
-      type: "static",
-      category: "static",
-      searchable: false,
-      representation: {
-        imagePath: `/assets/emojis/${emojiId.id}.png`,
-        width: 64,
-        height: 64,
-      },
+    const fetchByEmojiId = async (
+        emojiId: EmojiId
+    ): Promise<OptionalEmojiDescriptionWithVariations> => {
+        return {
+            ...emojiId,
+            type: 'static',
+            category: 'static',
+            searchable: false,
+            representation: {
+                imagePath: `/assets/emojis/${emojiId.id}.png`,
+                width: 64,
+                height: 64
+            }
+        };
     };
-  };
-  const fetchEmojiProvider = async () => undefined;
-  return { fetchByEmojiId, fetchEmojiProvider } as unknown as EmojiProvider;
+    const fetchEmojiProvider = async () => undefined;
+    return { fetchByEmojiId, fetchEmojiProvider } as unknown as EmojiProvider;
 };
 
 export { emojiProvider };

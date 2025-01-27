@@ -55,7 +55,7 @@ const webpackConfig = ({
     const staticSiteSources = path.join(__dirname, '..', 'static-site');
     const siteEntry = isDev
         ? path.join(staticSiteSources, 'index.tsx')
-        : path.join(staticSiteSources, 'index.tsx');
+        : path.join(staticSiteSources, 'index.js');
 
     return {
         mode,

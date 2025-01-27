@@ -15,27 +15,44 @@
  */
 import React from "react";
 
-import { ProviderFactory } from "@atlaskit/editor-common/provider-factory";
-import { SmartCardProvider } from "@atlaskit/link-provider";
+import { CardClient, SmartCardProvider } from "@atlaskit/link-provider";
 import { ReactRenderer } from "@atlaskit/renderer";
+import { JsonLd } from "json-ld-types";
 
 import { ContentData } from "../../../confluence-extract";
 
-import { emojiProvider } from "./emoji-provider";
-import { SimpleCardClient } from "./smart-card-client";
+import { dataProviders } from "./data-providers";
+import { extensionHandlers } from "./extension-handlers";
 
 const ContentRenderer = ({ content }: { content: ContentData }) => {
   return (
     <SmartCardProvider client={new SimpleCardClient()}>
-      <ReactRenderer document={content.body} dataProviders={dataProviders()} />
+      <ReactRenderer
+        document={content.body}
+        dataProviders={dataProviders()}
+        extensionHandlers={extensionHandlers(content)}
+      />
     </SmartCardProvider>
   );
 };
 
-const dataProviders = () => {
-  return ProviderFactory.create({
-    emojiProvider: emojiProvider(),
-  });
-};
+class SimpleCardClient extends CardClient {
+  async fetchData(url: string, _force?: boolean): Promise<JsonLd.Response> {
+    return {
+      meta: {
+        access: "granted",
+        visibility: "public",
+      },
+      data: {
+        name: url,
+        url,
+      },
+    } as JsonLd.Response;
+  }
+
+  async prefetchData(_url: string): Promise<JsonLd.Response | undefined> {
+    return undefined;
+  }
+}
 
 export { ContentRenderer };
