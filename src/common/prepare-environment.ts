@@ -24,7 +24,7 @@ interface Environment {
     GOOGLE_ANALYTICS_TRACKING_ID?: string;
 }
 
-const loadEnv = (): Environment => {
+const prepareEnvironment = (): Environment => {
     const parsed = (dotenv.config().parsed || {}) as unknown as Environment;
     return {
         CONFLUENCE_SITE_NAME:
@@ -40,5 +40,5 @@ const loadEnv = (): Environment => {
     };
 };
 
-export { loadEnv };
+export { prepareEnvironment };
 export type { Environment };

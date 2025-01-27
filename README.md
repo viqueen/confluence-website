@@ -16,7 +16,6 @@ yarn add @labset/confluence-website -D
 
 ### configure your site
 
-
 ```bash
 ./node_modules/.bin/confluence-website init-env
 ```
@@ -59,4 +58,3 @@ it creates a `.confluence-website.json` file with the following configuration
 ```bash
 ./node_modules/.bin/confluence-website build-space <spaceKey>
 ```
-
