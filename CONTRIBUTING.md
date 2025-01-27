@@ -20,12 +20,19 @@ nvm install
 npm ci
 ```
 
-- build it
+- configure your environment
 
 ```bash
-npm run build
+npm run cli -- env
 ```
 
+- extract and build your site
+
+```bash
+npm run cli -- extract-space <spaceKey>
+npm run cli -- build-space <spaceKey>
+npm run cli -- build-space <spaceKey> --serve
+```
 
 ## house-keeping
 
