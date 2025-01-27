@@ -13,14 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "./site-content.css";
+import Flag from "@atlaskit/flag";
+import ErrorIcon from "@atlaskit/icon/core/error";
+import Spinner from "@atlaskit/spinner";
+import axios from "axios";
+
+import { Content } from "../../confluence-api";
+
+import { ContentError, ContentLayout } from "./content";
+import { siteProperties } from "./site-properties";
 
 const SiteContent = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [content, setContent] = useState<Content | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data } = await axios.get<Content>("data.json");
+      return data;
+    };
+    fetchData()
+      .then((data) => {
+        document.title = `${siteProperties.name} - ${data.title}`;
+        setContent(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="site-content">
-      <div>yo</div>
+      {loading && <Spinner size="large" />}
+      {!loading && !content && <ContentError />}
+      {!loading && content && <ContentLayout content={content} />}
     </div>
   );
 };

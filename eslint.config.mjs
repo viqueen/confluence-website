@@ -88,6 +88,13 @@ export default [
             caseInsensitive: true,
           },
           pathGroupsExcludedImportTypes: ["builtin"],
+          pathGroups: [
+            {
+              pattern: "{react,react-*}",
+              group: "external",
+              position: "before",
+            },
+          ],
         },
       ],
     },
