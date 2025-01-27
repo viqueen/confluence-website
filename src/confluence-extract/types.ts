@@ -28,6 +28,7 @@ interface ContentIdentifier {
     title: string;
     type: 'page' | 'blogpost' | 'folder';
     emoji?: string;
+    coverUrl?: string;
 }
 
 interface Attachment {

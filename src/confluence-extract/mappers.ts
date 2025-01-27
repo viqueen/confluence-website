@@ -29,13 +29,21 @@ const mapContentToContentData = (
     }
     const childPages = content.children?.page.results || [];
     const attachments = content.children?.attachment.results || [];
-    const emoji = content.metadata?.properties['emoji-title-published']?.value;
+    const metadata: Record<string, string | undefined> = {
+        emoji: content.metadata?.properties['emoji-title-published']?.value
+    };
+    const cover =
+        content.metadata?.properties['cover-picture-id-published']?.value;
+    if (cover) {
+        const parsed = JSON.parse(cover);
+        metadata['coverUrl'] = parsed.id;
+    }
     return {
         identifier: {
             id: content.id,
             title: content.title,
             type: content.type,
-            emoji
+            ...metadata
         },
         body: scrubContent(environment, contentBody),
         childPages: childPages.map(({ id, title, type }) => ({

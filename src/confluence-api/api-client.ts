@@ -61,7 +61,8 @@ class ApiClient implements Api {
             'content.body.atlas_doc_format',
             'content.children.page',
             'content.children.attachment',
-            'content.metadata.properties.emoji_title_published'
+            'content.metadata.properties.emoji_title_published',
+            'content.metadata.properties.cover_picture_id_published'
         ];
         return this.client
             .get<SearchResponse>(`/wiki/rest/api/search`, {

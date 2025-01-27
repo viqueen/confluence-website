@@ -70,6 +70,9 @@ interface ContentMetadata {
         'emoji-title-published'?: {
             value: string;
         };
+        'cover-picture-id-published'?: {
+            value: string;
+        };
     };
 }
 
