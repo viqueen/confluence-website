@@ -13,6 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './command-init-env';
-export * from './command-extract-space';
-export * from './command-build-space';
+import { Output } from '../../common';
+import { BuildClient } from '../../confluence-build';
+
+const commandBuildSpace = async (
+    output: Output,
+    isDev: boolean,
+    port: number
+) => {
+    const build = new BuildClient();
+    if (isDev) {
+        await build.dev(output, port);
+    } else {
+        await build.prod(output);
+    }
+};
+
+export { commandBuildSpace };

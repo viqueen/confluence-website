@@ -19,7 +19,11 @@ import { Command } from 'commander';
 
 import { prepareEnvironment, prepareOutput } from '../common';
 
-import { commandExtractSpace, commandInitEnv } from './commands';
+import {
+    commandBuildSpace,
+    commandExtractSpace,
+    commandInitEnv
+} from './commands';
 
 const program = new Command();
 
@@ -50,16 +54,25 @@ withOptions(`extract-space <spaceKet>`, 'Extract content from a space').action(
 );
 
 // build site resources
-withOptions(`build-space <spaceKey>`, 'Build site resources').action(
-    async (spaceKey: string, options: { dest: string }) => {
-        console.log(
-            'Building site resources for',
-            spaceKey,
-            'to',
-            options.dest
-        );
-    }
-);
+withOptions(`build-space <spaceKey>`, 'Build site resources')
+    .option('--dev', 'build for development', false)
+    .option('--port <port>', 'development server port', '3000')
+    .action(
+        async (
+            spaceKey: string,
+            options: { dest: string; dev: boolean; port: string }
+        ) => {
+            const output = prepareOutput({
+                spaceKey,
+                destination: options.dest
+            });
+            await commandBuildSpace(
+                output,
+                options.dev,
+                parseInt(options.port)
+            );
+        }
+    );
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 program.version(require('../../package.json').version);
