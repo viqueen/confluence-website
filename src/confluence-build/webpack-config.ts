@@ -13,18 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import path from 'path';
+
+import { listFiles } from '@labset/fs-directory';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration } from 'webpack';
 
 import { Output } from '../common';
 
 interface WebpackConfigProps {
     mode: 'production' | 'development';
+    isDev: boolean;
     output: Output;
 }
 
-const webpackConfig = ({ mode, output }: WebpackConfigProps): Configuration => {
+const webpackConfig = ({
+    mode,
+    isDev,
+    output
+}: WebpackConfigProps): Configuration => {
+    const indexFiles = listFiles(output.templates.home, {
+        fileFilter: (entry) => entry.name === 'index.html',
+        directoryFilter: () => true
+    });
+
+    const htmlPlugins = indexFiles.map((template) => {
+        const filename = template.replace(`${output.templates.home}/`, '');
+        return new HtmlWebpackPlugin({
+            template,
+            filename
+        });
+    });
+
+    const plugins = [...htmlPlugins];
+
+    const staticSiteSources = path.join(__dirname, '..', 'static-site');
+    const siteEntry = isDev
+        ? path.join(staticSiteSources, 'index.tsx')
+        : path.join(staticSiteSources, 'index.tsx');
+
     return {
         mode,
+        entry: {
+            site: siteEntry
+        },
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.css'],
             fallback: {}
@@ -47,7 +79,8 @@ const webpackConfig = ({ mode, output }: WebpackConfigProps): Configuration => {
             filename: 'index.js',
             path: output.site.home,
             publicPath: '/'
-        }
+        },
+        plugins
     };
 };
 

@@ -25,6 +25,7 @@ class BuildClient implements Build {
     async prod(output: Output): Promise<void> {
         const config = webpackConfig({
             mode: 'production',
+            isDev: false,
             output
         });
         const compiler = webpack(config);
@@ -48,6 +49,7 @@ class BuildClient implements Build {
     async dev(output: Output, port: number): Promise<void> {
         const config = webpackConfig({
             mode: 'development',
+            isDev: true,
             output
         });
         const compiler = webpack(config);
