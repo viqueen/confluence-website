@@ -69,8 +69,8 @@ export default [
         "error",
         {
           license: "Apache-2.0",
-          copyRightYear: "<update-me>",
-          copyRightName: "<update-me>",
+          copyRightYear: "2025",
+          copyRightName: "Hasnae Rehioui",
         },
       ],
       "@typescript-eslint/no-unused-vars": [
