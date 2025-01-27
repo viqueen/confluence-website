@@ -109,6 +109,7 @@ export type {
     Space,
     Content,
     ContentBody,
+    ContentMetadata,
     SearchResultItem,
     SearchResponse,
     ContentChildren,

@@ -19,7 +19,10 @@ import Spinner from "@atlaskit/spinner";
 import axios from "axios";
 
 import { titleToPath } from "../../../../../common/helpers";
-import { ContentData } from "../../../../../confluence-extract";
+import {
+  ContentData,
+  ContentIdentifier,
+} from "../../../../../confluence-extract";
 
 import { MacroError } from "./macro-error";
 
@@ -34,7 +37,7 @@ const ChildrenMacro = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [childPages, setChildPages] = useState<
-    Array<{ id: number; title: string }> | undefined
+    Array<ContentIdentifier> | undefined
   >(undefined);
 
   useEffect(() => {
@@ -72,16 +75,32 @@ const ChildrenMacro = ({
   );
 };
 
-const ChildrenMacroItem = ({
-  childPage,
-}: {
-  childPage: { id: number; title: string };
-}) => {
+const ChildrenMacroItem = ({ childPage }: { childPage: ContentIdentifier }) => {
   const href = `/pages/${titleToPath(childPage.title)}/`;
   return (
     <div className="children-macro-item">
-      <a href={href}>{childPage.title}</a>
+      <ChildrenMacroItemCover childPage={childPage} />
+      <div className="children-macro-item-content">
+        <a href={href}>{childPage.title}</a>
+      </div>
     </div>
+  );
+};
+
+const ChildrenMacroItemCover = ({
+  childPage,
+}: {
+  childPage: ContentIdentifier;
+}) => {
+  if (!childPage.coverUrl) {
+    return <div className="children-macro-item-default-cover" />;
+  }
+  return (
+    <img
+      alt={`its-a-cover-up`}
+      src={`${childPage.coverUrl}&h=500`}
+      className="children-macro-item-cover"
+    />
   );
 };
 

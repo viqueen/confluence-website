@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Environment } from '../common';
-import { Content } from '../confluence-api';
+import { Content, ContentMetadata } from '../confluence-api';
 
 import { scrubContent } from './helpers/adf-processor';
 import { ContentData } from './types';
@@ -30,14 +30,9 @@ const mapContentToContentData = (
     const childPages = content.children?.page.results || [];
     const attachments = content.children?.attachment.results || [];
     const metadata: Record<string, string | undefined> = {
-        emoji: content.metadata?.properties['emoji-title-published']?.value
+        emoji: content.metadata?.properties['emoji-title-published']?.value,
+        coverUrl: getCoverUrl(content.metadata)
     };
-    const cover =
-        content.metadata?.properties['cover-picture-id-published']?.value;
-    if (cover) {
-        const parsed = JSON.parse(cover);
-        metadata['coverUrl'] = parsed.id;
-    }
     return {
         identifier: {
             id: content.id,
@@ -46,10 +41,12 @@ const mapContentToContentData = (
             ...metadata
         },
         body: scrubContent(environment, contentBody),
-        childPages: childPages.map(({ id, title, type }) => ({
+        childPages: childPages.map(({ id, title, type, metadata }) => ({
             id,
             title,
-            type
+            type,
+            emoji: metadata?.properties['emoji-title-published']?.value,
+            coverUrl: getCoverUrl(metadata)
         })),
         attachments: attachments.map(({ extensions, _links }) => ({
             fileId: extensions.fileId,
@@ -58,6 +55,14 @@ const mapContentToContentData = (
         })),
         objects: {}
     };
+};
+
+const getCoverUrl = (metadata?: ContentMetadata): string | undefined => {
+    const cover = metadata?.properties['cover-picture-id-published']?.value;
+    if (cover) {
+        const parsed = JSON.parse(cover);
+        return parsed.id;
+    }
 };
 
 const emptyContentBody = {
