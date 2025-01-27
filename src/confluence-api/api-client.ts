@@ -17,7 +17,14 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 import { axiosErrorHandler } from './axios-error-handler';
-import { Api, AttachmentData, SearchResponse, Space } from './types';
+import {
+    Api,
+    AttachmentData,
+    ResourceDefinition,
+    ResourceObject,
+    SearchResponse,
+    Space
+} from './types';
 
 interface ApiClientProps {
     baseUrl: string;
@@ -89,6 +96,20 @@ class ApiClient implements Api {
             .get(`${prefix}${targetUrl}`, { responseType: 'stream' })
             .catch(axiosErrorHandler);
         return { stream: data };
+    }
+
+    async getObjects(
+        resources: ResourceObject[]
+    ): Promise<{ body: { data: ResourceDefinition } }[]> {
+        const { data } = await this.client
+            .post(`/gateway/api/object-resolver/resolve/batch`, resources, {
+                headers: {
+                    'sec-fetch-mode': 'cors',
+                    'sec-fetch-site': 'same-origin'
+                }
+            })
+            .catch(axiosErrorHandler);
+        return data;
     }
 }
 

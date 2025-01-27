@@ -21,6 +21,21 @@ interface Api {
         prefix: string;
         targetUrl: string;
     }): Promise<AttachmentData>;
+    getObjects(
+        resources: ResourceObject[]
+    ): Promise<{ body: { data: ResourceDefinition } }[]>;
+}
+
+interface ResourceObject {
+    resourceUrl: string;
+}
+
+interface ResourceDefinition {
+    url: string;
+    generator: { icon: { url: string } };
+    name: string;
+    summary?: string;
+    '@type': string;
 }
 
 interface AttachmentData {
@@ -84,5 +99,7 @@ export type {
     ContentBody,
     SearchResultItem,
     SearchResponse,
-    ContentChildren
+    ContentChildren,
+    ResourceDefinition,
+    ResourceObject
 };

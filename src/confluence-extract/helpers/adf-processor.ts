@@ -25,19 +25,29 @@ const identityProcessor = (node: ADFEntity) => {
     return node;
 };
 
+// const cardProcessor = (environment: Environment) => (node: ADFEntity) => {
+//     const url = rewriteUrl(environment, node.attrs?.url);
+//     return {
+//         type: 'text',
+//         text: url,
+//         marks: [
+//             {
+//                 type: 'link',
+//                 attrs: {
+//                     href: url
+//                 }
+//             }
+//         ]
+//     };
+// };
+
 const cardProcessor = (environment: Environment) => (node: ADFEntity) => {
     const url = rewriteUrl(environment, node.attrs?.url);
     return {
-        type: 'text',
-        text: url,
-        marks: [
-            {
-                type: 'link',
-                attrs: {
-                    href: url
-                }
-            }
-        ]
+        type: node.type,
+        attrs: {
+            url
+        }
     };
 };
 

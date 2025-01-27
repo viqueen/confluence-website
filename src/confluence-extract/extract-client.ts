@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
-import { traverse } from '@atlaskit/adf-utils/traverse';
+import { filter, traverse } from '@atlaskit/adf-utils/traverse';
 import { ADFEntity } from '@atlaskit/adf-utils/types';
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
@@ -25,6 +26,7 @@ import { Environment, Output } from '../common';
 import { titleToPath, toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
+import { rewriteUrl } from './helpers/rewrite-url';
 import { saveContentData, saveContentTemplate } from './save-content';
 import { ContentData, Extract, LeftNavigation } from './types';
 
@@ -126,7 +128,60 @@ class ExtractClient implements Extract {
         );
         await this.extractContentAttachments(output, content);
         await this.extractContentEmojis(output, contentData);
+        await this.extractContentObjects(environment, output, contentData);
         return content;
+    }
+
+    private async extractContentObjects(
+        environment: Environment,
+        output: Output,
+        content: ContentData
+    ) {
+        const inlineCards = filter(
+            content.body,
+            (node) => node.type === 'inlineCard'
+        ).map((item) => {
+            return {
+                resourceUrl: item.attrs?.url
+            };
+        });
+        const blockCards = filter(
+            content.body,
+            (node) => node.type === 'blockCard'
+        ).map((item) => {
+            return {
+                resourceUrl: item.attrs?.url
+            };
+        });
+
+        const cards = [...inlineCards, ...blockCards];
+
+        if (cards.length < 1) return;
+
+        const resolvedObjects = await this.api.getObjects(cards);
+        console.info(`🔗 resolved objects: ${resolvedObjects.length}`);
+        resolvedObjects.forEach((item) => {
+            if (!item.body) {
+                return;
+            }
+            const data = item.body.data;
+            const { url, name, generator, summary } = data;
+            const definition = {
+                name,
+                generator,
+                summary,
+                url: rewriteUrl(environment, url),
+                '@type': data['@type']
+            };
+            const urlHash = crypto
+                .createHash('sha512')
+                .update(definition.url)
+                .digest('hex');
+            fs.writeFileSync(
+                path.resolve(output.site.assets.objects, `${urlHash}.json`),
+                JSON.stringify(definition)
+            );
+        });
     }
 
     private async extractContentAttachments(
