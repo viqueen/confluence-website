@@ -16,24 +16,22 @@
 import React, { useEffect, useState } from "react";
 
 import "./site-content.css";
-import Flag from "@atlaskit/flag";
-import ErrorIcon from "@atlaskit/icon/core/error";
 import Spinner from "@atlaskit/spinner";
 import axios from "axios";
 
-import { Content } from "../../confluence-api";
+import { ContentData } from "../../confluence-extract";
 
 import { ContentError, ContentLayout } from "./content";
 import { siteProperties } from "./site-properties";
 
 const SiteContent = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [content, setContent] = useState<Content | undefined>(undefined);
+  const [content, setContent] = useState<ContentData | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const { data } = await axios.get<Content>("data.json");
+      const { data } = await axios.get<ContentData>("data.json");
       return data;
     };
     fetchData()

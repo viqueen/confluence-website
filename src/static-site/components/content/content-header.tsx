@@ -19,11 +19,10 @@ import Heading from "@atlaskit/heading";
 import PageIcon from "@atlaskit/icon/core/page";
 import QuotationMarkIcon from "@atlaskit/icon/core/quotation-mark";
 
-import { Content } from "../../../confluence-api";
-
+import { ContentData } from "../../../confluence-extract";
 import "./content-header.css";
 
-const ContentHeader = ({ content }: { content: Content }) => {
+const ContentHeader = ({ content }: { content: ContentData }) => {
   return (
     <div className={"content-header"}>
       <ContentTypeLogo content={content} />
@@ -32,7 +31,7 @@ const ContentHeader = ({ content }: { content: Content }) => {
   );
 };
 
-const ContentTypeLogo = ({ content }: { content: Content }) => {
+const ContentTypeLogo = ({ content }: { content: ContentData }) => {
   switch (content.type) {
     case "page":
       return <PageIcon label={content.title} />;

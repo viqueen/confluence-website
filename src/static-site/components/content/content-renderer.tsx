@@ -15,10 +15,16 @@
  */
 import React from "react";
 
-import { Content } from "../../../confluence-api";
+import { ReactRenderer } from "@atlaskit/renderer";
 
-const ContentRenderer = ({}: { content: Content }) => {
-  return <div></div>;
+import { ContentData } from "../../../confluence-extract";
+
+const ContentRenderer = ({ content }: { content: ContentData }) => {
+  return (
+    <>
+      <ReactRenderer document={content.body} />
+    </>
+  );
 };
 
 export { ContentRenderer };

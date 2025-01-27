@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React from "react";
+
 import AppProvider from "@atlaskit/app-provider";
 import {
   Content,
@@ -21,7 +23,6 @@ import {
   PageLayout,
   TopNavigation,
 } from "@atlaskit/page-layout";
-import React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 
 import "@atlaskit/css-reset/dist/bundle.css";

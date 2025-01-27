@@ -15,9 +15,9 @@
  */
 import React from "react";
 
-import { Content } from "../../../confluence-api";
+import { ContentData } from "../../../confluence-extract";
 
-const ContentByLine = ({}: { content: Content }) => {
+const ContentByLine = (_props: { content: ContentData }) => {
   return <div></div>;
 };
 

@@ -15,9 +15,9 @@
  */
 import React from "react";
 
-import { Content } from "../../../confluence-api";
+import { ContentData } from "../../../confluence-extract";
 
-const ContentCover = ({}: { content: Content }) => {
+const ContentCover = (_props: { content: ContentData }) => {
   return <div></div>;
 };
 

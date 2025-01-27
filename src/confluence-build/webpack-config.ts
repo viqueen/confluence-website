@@ -46,7 +46,8 @@ const webpackConfig = ({
     });
 
     const definePlugin = new DefinePlugin({
-        __SITE_PROPERTIES__: JSON.stringify(prepareSiteProperties())
+        __SITE_PROPERTIES__: JSON.stringify(prepareSiteProperties()),
+        process: { env: { CI: false } }
     });
 
     const plugins = [definePlugin, ...htmlPlugins];
@@ -63,7 +64,9 @@ const webpackConfig = ({
         },
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.css'],
-            fallback: {}
+            fallback: {
+                buffer: false
+            }
         },
         module: {
             rules: [

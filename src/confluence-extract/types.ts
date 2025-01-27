@@ -23,4 +23,13 @@ interface Extract {
     ): Promise<void>;
 }
 
+interface ContentData {
+    id: number;
+    type: 'page' | 'blogpost' | 'folder';
+    title: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any;
+}
+
 export type { Extract };
+export type { ContentData };

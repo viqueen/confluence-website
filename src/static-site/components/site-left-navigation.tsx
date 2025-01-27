@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React from "react";
+
 import {
   Header,
   NavigationHeader,
@@ -20,7 +22,6 @@ import {
   Section,
   SideNavigation,
 } from "@atlaskit/side-navigation";
-import React from "react";
 
 const SiteLeftNavigation = () => {
   return (

@@ -17,7 +17,7 @@ import React from "react";
 
 import { Grid, GridColumn } from "@atlaskit/page";
 
-import { Content } from "../../../confluence-api";
+import { ContentData } from "../../../confluence-extract";
 
 import { ContentAncestors } from "./content-ancestors";
 import { ContentByLine } from "./content-by-line";
@@ -25,7 +25,7 @@ import { ContentCover } from "./content-cover";
 import { ContentHeader } from "./content-header";
 import { ContentRenderer } from "./content-renderer";
 
-const ContentLayout = ({ content }: { content: Content }) => {
+const ContentLayout = ({ content }: { content: ContentData }) => {
   return (
     <div>
       <ContentAncestors content={content} />
