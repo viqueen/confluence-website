@@ -17,7 +17,9 @@
  */
 import { Command } from 'commander';
 
-import { initEnvCommand } from './commands';
+import { prepareEnvironment, prepareOutput } from '../common';
+
+import { commandExtractSpace, commandInitEnv } from './commands';
 
 const program = new Command();
 
@@ -30,7 +32,7 @@ const withOptions = (cmd: string, description: string) => {
 
 // configure environment variables
 withOptions('init-env', 'Configure environment variables').action(async () => {
-    await initEnvCommand();
+    await commandInitEnv();
 });
 
 // configure site properties
@@ -41,12 +43,9 @@ withOptions('init-site', 'Configure site properties').action(() => {
 // extract content from a space
 withOptions(`extract-space <spaceKet>`, 'Extract content from a space').action(
     async (spaceKey: string, options: { dest: string }) => {
-        console.log(
-            'Extracting content from space',
-            spaceKey,
-            'to',
-            options.dest
-        );
+        const environment = prepareEnvironment();
+        const output = prepareOutput({ spaceKey, destination: options.dest });
+        await commandExtractSpace(environment, output, spaceKey);
     }
 );
 

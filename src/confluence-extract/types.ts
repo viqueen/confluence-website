@@ -13,5 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './command-init-env';
-export * from './command-extract-space';
+import { Output } from '../common';
+
+interface Extract {
+    extractSpace(spaceKey: string, output: Output): Promise<void>;
+}
+
+export type { Extract };

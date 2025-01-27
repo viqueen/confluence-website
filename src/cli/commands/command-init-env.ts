@@ -18,7 +18,7 @@ import path from 'path';
 
 import { start, get } from 'prompt';
 
-const initEnvCommand = async () => {
+const commandInitEnv = async () => {
     const properties = [
         {
             name: 'confluence site name',
@@ -41,4 +41,4 @@ const initEnvCommand = async () => {
     fs.writeFileSync(envFile, envData);
 };
 
-export { initEnvCommand };
+export { commandInitEnv };
