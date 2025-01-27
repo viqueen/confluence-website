@@ -17,8 +17,21 @@ import React from "react";
 
 import { ContentData } from "../../../confluence-extract";
 
-const ContentCover = (_props: { content: ContentData }) => {
-  return <div></div>;
+const ContentCover = ({ content }: { content: ContentData }) => {
+  if (!content.identifier.coverUrl) return <></>;
+  return (
+    <img
+      src={content.identifier.coverUrl}
+      style={{
+        height: "20rem",
+        objectFit: "cover",
+        width: "100%",
+        display: "flex",
+      }}
+      className="media-file"
+      alt={"its-a-cover-up"}
+    />
+  );
 };
 
 export { ContentCover };
