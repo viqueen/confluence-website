@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { AxiosInstance } from 'axios';
+
 import { Environment, Output } from '../common';
+import { Api } from '../confluence-api';
 
 interface Extract {
     extractSpace(
@@ -21,6 +24,11 @@ interface Extract {
         output: Output,
         spaceKey: string
     ): Promise<void>;
+}
+
+interface Clients {
+    confluence: Api;
+    emoji: AxiosInstance;
 }
 
 interface ContentIdentifier {
@@ -74,7 +82,7 @@ interface LeftNavigation {
     paths: Record<string, string>;
 }
 
-export type { Extract };
+export type { Extract, Clients };
 export type {
     ContentData,
     LeftNavigation,

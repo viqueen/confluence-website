@@ -13,6 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './extract-client';
+export * from './client';
 export * from './types';
-export * from './save-content';

@@ -13,16 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Environment, Output } from '../../common';
-import { ExtractClient } from '../../confluence-extract';
-
-const commandExtractSpace = async (
-    environment: Environment,
-    output: Output,
-    spaceKey: string
-) => {
-    const client = new ExtractClient();
-    await client.extractSpace(environment, output, spaceKey);
-};
-
-export { commandExtractSpace };
+export * from './adf-processor';
+export * from './rewrite-url';
