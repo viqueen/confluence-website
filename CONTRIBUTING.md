@@ -31,7 +31,7 @@ npm run cli -- init-env
 ```bash
 npm run cli -- extract-space <spaceKey>
 npm run cli -- build-space <spaceKey>
-npm run cli -- build-space <spaceKey> --serve
+npm run cli -- build-space <spaceKey> --dev
 ```
 
 ## house-keeping
