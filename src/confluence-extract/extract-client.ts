@@ -27,7 +27,10 @@ import { titleToPath, toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
 import { rewriteUrl } from './helpers/rewrite-url';
-import { mapContentToContentData } from './mappers';
+import {
+    mapContentToBlogPostSummary,
+    mapContentToContentData
+} from './mappers';
 import { saveContentData, saveContentTemplate } from './save-content';
 import { ContentData, Extract, LeftNavigation, NavigationItem } from './types';
 
@@ -75,24 +78,57 @@ class ExtractClient implements Extract {
             await this.extractContentItem(environment, output, blogPost, false);
         }
 
+        const blogs = await this.extractBlogPosts(output, blogPosts);
+
         // extract left navigation
-        await this.extractLeftNavigation(output, pages);
+        await this.extractLeftNavigation(output, pages, blogs);
+    }
+
+    private async extractBlogPosts(
+        output: Output,
+        blogPosts: Content[]
+    ): Promise<Record<number, NavigationItem[]>> {
+        console.info(`📚 extract blog posts: ${blogPosts.length}`);
+        const blogs = blogPosts.map(mapContentToBlogPostSummary);
+        fs.writeFileSync(
+            path.resolve(output.site.home, 'blogs.json'),
+            JSON.stringify(blogs, null, 2)
+        );
+        return blogs.reduce(
+            (prev, current) => {
+                const byYear = prev[current.createdYear] || [];
+                byYear.push({
+                    id: current.identifier.id,
+                    title: current.identifier.title,
+                    type: 'blogpost',
+                    href: `/blogs/${titleToPath(current.identifier.title)}/`,
+                    emoji: current.identifier.emoji
+                });
+                prev[current.createdYear] = byYear;
+                return prev;
+            },
+            {} as Record<number, NavigationItem[]>
+        );
     }
 
     private async extractLeftNavigation(
         output: Output,
-        pages: NavigationItem[]
+        pages: NavigationItem[],
+        blogs: Record<number, NavigationItem[]>
     ): Promise<void> {
         console.info(`🗺️extract left navigation`);
-        const paths = await this.resolveNavigationPaths(pages);
-        const navigation: LeftNavigation = { pages, paths };
+        const paths = await this.resolveNavigationPaths(pages, blogs);
+        const navigation: LeftNavigation = { pages, blogs, paths };
         fs.writeFileSync(
             path.resolve(output.site.home, 'left-navigation.json'),
             JSON.stringify(navigation, null, 2)
         );
     }
 
-    private async resolveNavigationPaths(pages: NavigationItem[]) {
+    private async resolveNavigationPaths(
+        pages: NavigationItem[],
+        blogs: Record<number, NavigationItem[]>
+    ): Promise<Record<string, string>> {
         const paths: Record<string, string> = {};
         const traversePages = (
             pageItems: NavigationItem[],
@@ -110,6 +146,12 @@ class ExtractClient implements Extract {
             });
         };
         traversePages(pages);
+        for (const year in blogs) {
+            const blogPosts = blogs[year];
+            blogPosts.forEach((blogPost) => {
+                paths[blogPost.href] = `/blogs/${year}/`;
+            });
+        }
         return paths;
     }
 

@@ -46,6 +46,12 @@ interface ContentData {
     objects: Record<string, string>;
 }
 
+interface BlogPostSummary {
+    identifier: ContentIdentifier;
+    createdDate: number;
+    createdYear: number;
+}
+
 interface NavigationItem extends ContentIdentifier {
     href: string;
     children?: NavigationItem[];
@@ -53,6 +59,7 @@ interface NavigationItem extends ContentIdentifier {
 
 interface LeftNavigation {
     pages: NavigationItem[];
+    blogs: Record<string, NavigationItem[]>; // year -> blogposts
     paths: Record<string, string>;
 }
 
@@ -62,5 +69,6 @@ export type {
     LeftNavigation,
     NavigationItem,
     ContentIdentifier,
-    Attachment
+    Attachment,
+    BlogPostSummary
 };

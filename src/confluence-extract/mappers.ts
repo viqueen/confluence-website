@@ -17,7 +17,7 @@ import { Environment } from '../common';
 import { Content, ContentMetadata } from '../confluence-api';
 
 import { scrubContent } from './helpers/adf-processor';
-import { ContentData } from './types';
+import { BlogPostSummary, ContentData } from './types';
 
 const mapContentToContentData = (
     environment: Environment,
@@ -57,6 +57,23 @@ const mapContentToContentData = (
     };
 };
 
+const mapContentToBlogPostSummary = (content: Content): BlogPostSummary => {
+    const createdAt = new Date(content.history?.createdDate || 0);
+    const createdDate = createdAt.getTime();
+    const createdYear = createdAt.getFullYear();
+    return {
+        identifier: {
+            id: content.id,
+            title: content.title,
+            type: content.type,
+            emoji: content.metadata?.properties['emoji-title-published']?.value,
+            coverUrl: getCoverUrl(content.metadata)
+        },
+        createdDate,
+        createdYear
+    };
+};
+
 const getCoverUrl = (metadata?: ContentMetadata): string | undefined => {
     const cover = metadata?.properties['cover-picture-id-published']?.value;
     if (cover) {
@@ -71,4 +88,4 @@ const emptyContentBody = {
     content: []
 };
 
-export { mapContentToContentData };
+export { mapContentToContentData, mapContentToBlogPostSummary };

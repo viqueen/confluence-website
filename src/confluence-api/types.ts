@@ -55,6 +55,9 @@ interface Content {
     id: number;
     type: 'page' | 'blogpost' | 'folder';
     title: string;
+    history?: {
+        createdDate: string;
+    };
     body?: ContentBody;
     children?: ContentChildren;
     metadata?: ContentMetadata;
