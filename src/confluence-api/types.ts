@@ -57,6 +57,13 @@ interface Content {
     title: string;
     history?: {
         createdDate: string;
+        createdBy: {
+            accountId: string;
+            publicName: string;
+            profilePicture: {
+                path: string;
+            };
+        };
     };
     body?: ContentBody;
     children?: ContentChildren;

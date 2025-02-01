@@ -37,8 +37,14 @@ interface Attachment {
     downloadUrl: string;
 }
 
+interface Author {
+    id: string;
+    title: string;
+}
+
 interface ContentData {
     identifier: ContentIdentifier;
+    author: Author;
     excerpt: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
@@ -49,6 +55,7 @@ interface ContentData {
 
 interface BlogPostSummary {
     identifier: ContentIdentifier;
+    author: Author;
     excerpt: string;
     href: string;
     createdDate: number;

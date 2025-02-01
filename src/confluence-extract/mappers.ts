@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import crypto from 'crypto';
+
 import { Environment } from '../common';
 import { titleToPath } from '../common/helpers';
 import { ContentMetadata, SearchResultItem } from '../confluence-api';
@@ -34,12 +36,23 @@ const mapSearchResultItemToContentData = (
         emoji: content.metadata?.properties['emoji-title-published']?.value,
         coverUrl: getCoverUrl(content.metadata)
     };
+    const createdBy = content.history?.createdBy ?? {
+        accountId: '',
+        publicName: ''
+    };
     return {
         identifier: {
             id: content.id,
             title: content.title,
             type: content.type,
             ...metadata
+        },
+        author: {
+            id: crypto
+                .createHash('sha512')
+                .update(createdBy.accountId)
+                .digest('hex'),
+            title: createdBy.publicName
         },
         excerpt,
         body: scrubContent(environment, contentBody),
@@ -66,6 +79,10 @@ const mapSearchResultItemToBlogPostSummary = ({
     const createdAt = new Date(content.history?.createdDate || 0);
     const createdDate = createdAt.getTime();
     const createdYear = createdAt.getFullYear();
+    const createdBy = content.history?.createdBy ?? {
+        accountId: '',
+        publicName: ''
+    };
     return {
         identifier: {
             id: content.id,
@@ -73,6 +90,13 @@ const mapSearchResultItemToBlogPostSummary = ({
             type: content.type,
             emoji: content.metadata?.properties['emoji-title-published']?.value,
             coverUrl: getCoverUrl(content.metadata)
+        },
+        author: {
+            id: crypto
+                .createHash('sha512')
+                .update(createdBy.accountId)
+                .digest('hex'),
+            title: createdBy.publicName
         },
         excerpt,
         href: `/blogs/${titleToPath(content.title)}/`,
