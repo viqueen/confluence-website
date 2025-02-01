@@ -1,0 +1,11 @@
+{
+  "name": "Git - Downloads",
+  "generator": {
+    "@type": "Object",
+    "name": "git-scm.com",
+    "icon": { "@type": "Image", "url": "https://git-scm.com/favicon.ico" }
+  },
+  "summary": "The entire Pro Git book written\n  by Scott Chacon and Ben Straub is available to read online for free.\n  Dead tree versions are available on Amazon.com.",
+  "url": "https://git-scm.com/downloads",
+  "@type": "Object"
+}

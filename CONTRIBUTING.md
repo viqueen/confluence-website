@@ -34,6 +34,12 @@ npm run cli -- build-space <spaceKey>
 npm run cli -- build-space <spaceKey> --dev
 ```
 
+- or test with local content
+
+```bash
+npm run cli -- build-space public --dest local --dev
+```
+
 ## house-keeping
 
 - build it
