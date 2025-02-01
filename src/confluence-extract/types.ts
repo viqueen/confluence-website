@@ -53,6 +53,7 @@ interface NavigationItem extends ContentIdentifier {
 
 interface LeftNavigation {
     pages: NavigationItem[];
+    paths: Record<string, string>;
 }
 
 export type { Extract };

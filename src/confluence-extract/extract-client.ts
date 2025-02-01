@@ -74,11 +74,33 @@ class ExtractClient implements Extract {
         pages: NavigationItem[]
     ): Promise<void> {
         console.info(`🗺️extract left navigation`);
-        const navigation: LeftNavigation = { pages };
+        const paths = await this.resolveNavigationPaths(pages);
+        const navigation: LeftNavigation = { pages, paths };
         fs.writeFileSync(
             path.resolve(output.site.home, 'left-navigation.json'),
             JSON.stringify(navigation, null, 2)
         );
+    }
+
+    private async resolveNavigationPaths(pages: NavigationItem[]) {
+        const paths: Record<string, string> = {};
+        const traversePages = (
+            pageItems: NavigationItem[],
+            parentPath = ''
+        ) => {
+            pageItems.forEach((page) => {
+                if (parentPath !== '') {
+                    paths[page.href] = parentPath;
+                }
+                const children = page.children ?? [];
+                if (children.length > 0) {
+                    paths[page.href] = page.href;
+                    traversePages(children, page.href);
+                }
+            });
+        };
+        traversePages(pages);
+        return paths;
     }
 
     private async extractPageHierarchies(

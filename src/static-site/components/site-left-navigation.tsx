@@ -21,19 +21,21 @@ import {
   LinkItem,
   NavigationHeader,
   NestableNavigationContent,
+  NestingItem,
   Section,
   SideNavigation,
 } from "@atlaskit/side-navigation";
 import axios from "axios";
 
+import { titleToPath } from "../../common/helpers";
 import { LeftNavigation, NavigationItem } from "../../confluence-extract";
 
 import { ContentIcon } from "./helpers";
 import { siteProperties } from "./site-properties";
 
 const SiteLeftNavigation = () => {
-  const [leftNav, setLeftNav] = useState<LeftNavigation>({ pages: [] });
-  const [stack] = useState<string[]>([]);
+  const [leftNav, setLeftNav] = useState<LeftNavigation | undefined>(undefined);
+  const [stack, setStack] = useState<string[] | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +45,9 @@ const SiteLeftNavigation = () => {
     fetchData()
       .then((data) => {
         setLeftNav(data);
+        const pathName = window.location.pathname;
+        const resolved = data.paths[pathName];
+        setStack(resolved ? [resolved] : []);
       })
       .catch(console.error);
   }, []);
@@ -54,15 +59,49 @@ const SiteLeftNavigation = () => {
           {siteProperties.name}
         </Header>
       </NavigationHeader>
-      <NestableNavigationContent initialStack={stack}>
-        <Section title="Pages">
-          {leftNav.pages.map((page) => (
-            <NavigationLinkItem key={page.id} item={page} />
-          ))}
-        </Section>
-      </NestableNavigationContent>
+      <NestableNav stack={stack} pages={leftNav?.pages} />
     </SideNavigation>
   );
+};
+
+const NestableNav = ({
+  stack,
+  pages,
+}: {
+  stack?: string[];
+  pages?: NavigationItem[];
+}) => {
+  if (!pages || !stack) {
+    return null;
+  }
+  return (
+    <NestableNavigationContent initialStack={stack}>
+      <Section title="Pages">
+        {pages.map((page) => (
+          <PageNavigation page={page} key={page.id} />
+        ))}
+      </Section>
+    </NestableNavigationContent>
+  );
+};
+
+const PageNavigation = ({ page }: { page: NavigationItem }) => {
+  const children = page.children || [];
+  if (children.length > 0) {
+    return (
+      <NestingItem
+        id={`/pages/${titleToPath(page.title)}/`}
+        title={page.title}
+        iconBefore={<ContentIcon identifier={page} />}
+        onClick={() => window.location.assign(page.href)}
+      >
+        {page.children?.map((child) => (
+          <PageNavigation page={child} key={child.id} />
+        ))}
+      </NestingItem>
+    );
+  }
+  return <NavigationLinkItem item={page} />;
 };
 
 const NavigationLinkItem = ({ item }: { item: NavigationItem }) => {
