@@ -18,6 +18,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from "@atlaskit/spinner";
 import axios from "axios";
 
+import { unescapeExcerpt } from "../../../../../common/helpers";
 import { BlogPostSummary } from "../../../../../confluence-extract";
 
 import "./blog-posts-macro.css";
@@ -60,6 +61,7 @@ const BlogPostItem = ({ post }: { post: BlogPostSummary }) => {
       <BlogPostItemCover post={post} />
       <div className={"blog-post-item-content"}>
         <a href={post.href}>{post.identifier.title}</a>
+        <div className="excerpt">{unescapeExcerpt(post.excerpt)}</div>
       </div>
     </div>
   );

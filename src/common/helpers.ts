@@ -25,4 +25,16 @@ const toExtension = (mediaType: string) => {
     return '';
 };
 
-export { titleToPath, toExtension };
+const unescapeExcerpt = (excerpt: string) => {
+    return excerpt.replace(
+        /&amp;|&#39;|&quot;/g,
+        (element) =>
+            ({
+                '&amp;': '&',
+                '&#39;': "'",
+                '&quot;': '"'
+            })[element] ?? element
+    );
+};
+
+export { titleToPath, toExtension, unescapeExcerpt };

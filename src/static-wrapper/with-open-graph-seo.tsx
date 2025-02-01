@@ -16,15 +16,17 @@
 import React from "react";
 
 import { Environment } from "../common";
+import { unescapeExcerpt } from "../common/helpers";
 import { ContentData } from "../confluence-extract";
 
 const withOpenGraphSeo = (environment: Environment, content: ContentData) => {
+  const excerpt = unescapeExcerpt(content.excerpt);
   return (
     <>
       <meta name="og:title" content={content.identifier.title} />
       <meta property="og:title" content={content.identifier.title} />
-      <meta name="og:description" content={content.excerpt} />
-      <meta property="og:description" content={content.excerpt} />
+      <meta name="og:description" content={excerpt} />
+      <meta property="og:description" content={excerpt} />
       <meta name="og:url" content={environment.TARGET_SITE} />
       <meta property="og:url" content={environment.TARGET_SITE} />
     </>
