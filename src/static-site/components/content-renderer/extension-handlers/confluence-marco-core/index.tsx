@@ -22,12 +22,15 @@ import type {
 
 import { ContentData } from "../../../../../confluence-extract";
 
+import { BlogPostsMarco } from "./blog-posts-marco";
 import { ChildrenMacro } from "./children-macro";
 import { MacroWarning } from "./macro-warning";
 
 const confluenceMacroCore = (content: ContentData) => {
   return (ext: ExtensionParams<Parameters>) => {
     switch (ext.extensionKey) {
+      case "blog-posts":
+        return <BlogPostsMarco />;
       case "children":
         return (
           <ChildrenMacro

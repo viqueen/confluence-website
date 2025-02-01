@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { Environment } from '../common';
+import { titleToPath } from '../common/helpers';
 import { Content, ContentMetadata } from '../confluence-api';
 
 import { scrubContent } from './helpers/adf-processor';
@@ -69,6 +70,7 @@ const mapContentToBlogPostSummary = (content: Content): BlogPostSummary => {
             emoji: content.metadata?.properties['emoji-title-published']?.value,
             coverUrl: getCoverUrl(content.metadata)
         },
+        href: `/blogs/${titleToPath(content.title)}/`,
         createdDate,
         createdYear
     };

@@ -48,6 +48,7 @@ interface ContentData {
 
 interface BlogPostSummary {
     identifier: ContentIdentifier;
+    href: string;
     createdDate: number;
     createdYear: number;
 }
