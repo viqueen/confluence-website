@@ -16,17 +16,23 @@
 import React from "react";
 
 import Flag from "@atlaskit/flag";
-import ErrorIcon from "@atlaskit/icon/core/error";
+import WarningIcon from "@atlaskit/icon/glyph/warning";
+import { token } from "@atlaskit/tokens";
 
-const MacroError = () => {
+const MacroWarning = ({ message }: { message: string }) => {
   return (
     <Flag
-      id="macro-error"
-      appearance="error"
-      title="We couldn't load the macro"
-      icon={<ErrorIcon label="Error" />}
+      id="macro-warning"
+      appearance="warning"
+      title={message}
+      icon={
+        <WarningIcon
+          label="Warning"
+          secondaryColor={token("color.background.warning.bold")}
+        />
+      }
     />
   );
 };
 
-export { MacroError };
+export { MacroWarning };

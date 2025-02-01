@@ -24,8 +24,6 @@ import {
   ContentIdentifier,
 } from "../../../../../confluence-extract";
 
-import { MacroError } from "./macro-error";
-
 import "./children-macro.css";
 
 const ChildrenMacro = ({
@@ -36,9 +34,7 @@ const ChildrenMacro = ({
   parent?: string;
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [childPages, setChildPages] = useState<
-    Array<ContentIdentifier> | undefined
-  >(undefined);
+  const [childPages, setChildPages] = useState<Array<ContentIdentifier>>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +59,6 @@ const ChildrenMacro = ({
   return (
     <>
       {loading && <Spinner size="small" />}
-      {!loading && !childPages && <MacroError />}
       {!loading && childPages && (
         <div className="children-macro">
           {childPages.map((childPage) => (

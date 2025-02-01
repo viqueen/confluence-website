@@ -23,6 +23,7 @@ import type {
 import { ContentData } from "../../../../../confluence-extract";
 
 import { ChildrenMacro } from "./children-macro";
+import { MacroWarning } from "./macro-warning";
 
 const confluenceMacroCore = (content: ContentData) => {
   return (ext: ExtensionParams<Parameters>) => {
@@ -35,8 +36,11 @@ const confluenceMacroCore = (content: ContentData) => {
           />
         );
       default:
-        console.warn("** missing extension handler", ext.extensionKey, ext);
-        return null;
+        return (
+          <MacroWarning
+            message={`${ext.extensionKey} extension not supported`}
+          />
+        );
     }
   };
 };
