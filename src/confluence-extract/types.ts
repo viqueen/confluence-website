@@ -48,6 +48,7 @@ interface ContentData {
 
 interface NavigationItem extends ContentIdentifier {
     href: string;
+    children?: NavigationItem[];
 }
 
 interface LeftNavigation {

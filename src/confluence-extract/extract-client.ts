@@ -19,8 +19,8 @@ import path from 'path';
 
 import { filter, traverse } from '@atlaskit/adf-utils/traverse';
 import { ADFEntity } from '@atlaskit/adf-utils/types';
-import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import axios from 'axios';
 
 import { Environment, Output } from '../common';
 import { titleToPath, toExtension } from '../common/helpers';
@@ -29,7 +29,7 @@ import { Api, Content } from '../confluence-api';
 import { rewriteUrl } from './helpers/rewrite-url';
 import { mapContentToContentData } from './mappers';
 import { saveContentData, saveContentTemplate } from './save-content';
-import { ContentData, Extract, LeftNavigation } from './types';
+import { ContentData, Extract, LeftNavigation, NavigationItem } from './types';
 
 class ExtractClient implements Extract {
     private readonly emojiClient: AxiosInstance;
@@ -60,29 +60,20 @@ class ExtractClient implements Extract {
         // extract homepage
         await this.extractContentItem(environment, output, homepage, true);
         // extract public folder
-        await this.extractPageHierarchies(
+        const pages = await this.extractPageHierarchies(
             environment,
             output,
             publicFolder.children?.page.results ?? []
         );
         // extract left navigation
-        await this.extractLeftNavigation(
-            output,
-            publicFolder.children?.page.results ?? []
-        );
+        await this.extractLeftNavigation(output, pages);
     }
 
     private async extractLeftNavigation(
         output: Output,
-        publicPages: Content[]
+        pages: NavigationItem[]
     ): Promise<void> {
-        const pages = publicPages.map(({ id, title, type, metadata }) => ({
-            id,
-            title,
-            type,
-            href: `/pages/${titleToPath(title)}/`,
-            emoji: metadata?.properties['emoji-title-published']?.value
-        }));
+        console.info(`🗺️extract left navigation`);
         const navigation: LeftNavigation = { pages };
         fs.writeFileSync(
             path.resolve(output.site.home, 'left-navigation.json'),
@@ -93,18 +84,35 @@ class ExtractClient implements Extract {
     private async extractPageHierarchies(
         environment: Environment,
         output: Output,
-        pages: Content[]
-    ): Promise<void> {
-        for (const page of pages) {
+        contentItems: Content[]
+    ): Promise<NavigationItem[]> {
+        const pages: NavigationItem[] = [];
+        for (const content of contentItems) {
             const parent = await this.extractContentItem(
                 environment,
                 output,
-                page,
+                content,
                 false
             );
-            const childPages = parent.children?.page?.results ?? [];
-            await this.extractPageHierarchies(environment, output, childPages);
+            const parentPage: NavigationItem = {
+                id: content.id,
+                title: content.title,
+                type: 'page',
+                href: `/pages/${titleToPath(content.title)}/`,
+                emoji: content.metadata?.properties['emoji-title-published']
+                    ?.value
+            };
+            const children = parent.children?.page?.results ?? [];
+            if (children.length > 0) {
+                parentPage.children = await this.extractPageHierarchies(
+                    environment,
+                    output,
+                    children
+                );
+            }
+            pages.push(parentPage);
         }
+        return pages;
     }
 
     private async extractContentItem(
