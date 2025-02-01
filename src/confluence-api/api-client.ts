@@ -59,7 +59,6 @@ class ApiClient implements Api {
     async searchSpaceBlogPosts(spaceKey: string): Promise<SearchResponse> {
         const contentExpansions = [
             'content.history',
-            'content.version',
             'content.metadata.properties.emoji_title_published',
             'content.metadata.properties.cover_picture_id_published'
         ];
@@ -76,7 +75,7 @@ class ApiClient implements Api {
 
     async searchContent(contentId: number): Promise<SearchResponse> {
         const contentExpansions = [
-            'content.version',
+            'content.history',
             'content.body.atlas_doc_format',
             'content.children.page',
             'content.children.page.metadata.properties.emoji_title_published',

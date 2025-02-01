@@ -212,6 +212,7 @@ class ExtractClient implements Extract {
         );
 
         await this.extractContentAttachments(output, resultItem.content);
+        await this.extractContentAvatars(output, resultItem.content);
         await this.extractContentEmojis(output, contentData);
         await this.extractContentObjects(environment, output, contentData);
 
@@ -311,6 +312,29 @@ class ExtractClient implements Extract {
                     .catch(console.error);
             })
         );
+    }
+
+    private async extractContentAvatars(output: Output, content: Content) {
+        const createdBy = content.history?.createdBy;
+        if (!createdBy) return;
+        const accountId = crypto
+            .createHash('sha512')
+            .update(createdBy.accountId)
+            .digest('hex');
+        const avatarFile = path.resolve(
+            output.site.assets.avatars,
+            `${accountId}-avatar`
+        );
+        if (fs.existsSync(avatarFile)) return;
+        const { stream } = await this.api.getAttachmentData({
+            prefix: '',
+            targetUrl: createdBy.profilePicture.path
+        });
+        const file = fs.createWriteStream(avatarFile);
+        stream.pipe(file);
+        const symlink = path.resolve(output.site.assets.avatars, accountId);
+        if (fs.existsSync(symlink)) return;
+        fs.symlinkSync(avatarFile, symlink);
     }
 
     private async extractContentEmojis(
