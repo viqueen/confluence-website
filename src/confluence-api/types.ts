@@ -16,6 +16,7 @@
 interface Api {
     getSpace(spaceKey: string): Promise<Space>;
     searchSpacePublicFolder(spaceKey: string): Promise<SearchResponse>;
+    searchSpaceBlogPosts(spaceKey: string): Promise<SearchResponse>;
     searchContent(contentId: number): Promise<SearchResponse>;
     getAttachmentData(input: {
         prefix: string;

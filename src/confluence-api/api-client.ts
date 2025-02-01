@@ -56,6 +56,23 @@ class ApiClient implements Api {
             .catch(axiosErrorHandler);
     }
 
+    async searchSpaceBlogPosts(spaceKey: string): Promise<SearchResponse> {
+        const contentExpansions = [
+            'content.history',
+            'content.metadata.properties.emoji_title_published',
+            'content.metadata.properties.cover_picture_id_published'
+        ];
+        return this.client
+            .get<SearchResponse>(`/wiki/rest/api/search`, {
+                params: {
+                    cql: `space = "${spaceKey}" and type = "blogpost" order by created desc`,
+                    expand: contentExpansions.join(',')
+                }
+            })
+            .then((response) => response.data)
+            .catch(axiosErrorHandler);
+    }
+
     async searchContent(contentId: number): Promise<SearchResponse> {
         const contentExpansions = [
             'content.body.atlas_doc_format',
