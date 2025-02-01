@@ -51,8 +51,9 @@ class ExtractClient implements Extract {
         if (!homepage) {
             throw Error('❌ homepage not found');
         }
-        const response = await this.api.searchSpacePublicFolder(spaceKey);
-        const publicFolder = response.results[0]?.content;
+        const publicFolderResponse =
+            await this.api.searchSpacePublicFolder(spaceKey);
+        const publicFolder = publicFolderResponse.results[0]?.content;
         if (!publicFolder) {
             throw Error('❌ public folder not found');
         }
@@ -63,8 +64,17 @@ class ExtractClient implements Extract {
         const pages = await this.extractPageHierarchies(
             environment,
             output,
-            publicFolder.children?.page.results ?? []
+            publicFolder.children?.page?.results ?? []
         );
+        // extract blog posts
+        const blogPostsResponse = await this.api.searchSpaceBlogPosts(spaceKey);
+        const blogPosts = blogPostsResponse.results.map(
+            (result) => result.content
+        );
+        for (const blogPost of blogPosts) {
+            await this.extractContentItem(environment, output, blogPost, false);
+        }
+
         // extract left navigation
         await this.extractLeftNavigation(output, pages);
     }

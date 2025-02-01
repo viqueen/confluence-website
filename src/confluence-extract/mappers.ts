@@ -27,8 +27,8 @@ const mapContentToContentData = (
     if (content.body && content.body.atlas_doc_format) {
         contentBody = JSON.parse(content.body.atlas_doc_format.value);
     }
-    const childPages = content.children?.page.results || [];
-    const attachments = content.children?.attachment.results || [];
+    const childPages = content.children?.page?.results || [];
+    const attachments = content.children?.attachment?.results || [];
     const metadata: Record<string, string | undefined> = {
         emoji: content.metadata?.properties['emoji-title-published']?.value,
         coverUrl: getCoverUrl(content.metadata)

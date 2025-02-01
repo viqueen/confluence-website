@@ -88,10 +88,10 @@ interface File {
 }
 
 interface ContentChildren {
-    page: {
+    page?: {
         results: Content[];
     };
-    attachment: {
+    attachment?: {
         results: File[];
     };
 }
