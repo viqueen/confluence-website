@@ -16,6 +16,7 @@
 import React, { useEffect, useState } from "react";
 
 import LibraryIcon from "@atlaskit/icon/core/library";
+import StoryIcon from "@atlaskit/icon/core/story";
 import {
   Header,
   LinkItem,
@@ -59,7 +60,11 @@ const SiteLeftNavigation = () => {
           {siteProperties.name}
         </Header>
       </NavigationHeader>
-      <NestableNav stack={stack} pages={leftNav?.pages} />
+      <NestableNav
+        stack={stack}
+        pages={leftNav?.pages}
+        blogs={leftNav?.blogs}
+      />
     </SideNavigation>
   );
 };
@@ -67,19 +72,30 @@ const SiteLeftNavigation = () => {
 const NestableNav = ({
   stack,
   pages,
+  blogs,
 }: {
   stack?: string[];
   pages?: NavigationItem[];
+  blogs?: Record<number, NavigationItem[]>;
 }) => {
-  if (!pages || !stack) {
+  if (!stack) {
     return null;
   }
   return (
     <NestableNavigationContent initialStack={stack}>
       <Section title="Pages">
-        {pages.map((page) => (
-          <PageNavigation page={page} key={page.id} />
-        ))}
+        {pages?.map((page) => <PageNavigation page={page} key={page.id} />)}
+      </Section>
+      <Section title={"Blogs"} hasSeparator={true}>
+        {Object.entries(blogs || {})
+          .sort(([a], [b]) => b.localeCompare(a))
+          .map(([year, items]) => (
+            <BlogYearNavigation
+              year={parseInt(year)}
+              items={items}
+              key={year}
+            />
+          ))}
       </Section>
     </NestableNavigationContent>
   );
@@ -102,6 +118,26 @@ const PageNavigation = ({ page }: { page: NavigationItem }) => {
     );
   }
   return <NavigationLinkItem item={page} />;
+};
+
+const BlogYearNavigation = ({
+  year,
+  items,
+}: {
+  year: number;
+  items: NavigationItem[];
+}) => {
+  return (
+    <NestingItem
+      id={`/blogs/${year}/`}
+      title={`${year}`}
+      iconBefore={<StoryIcon label={`${year}`} />}
+    >
+      {items.map((item) => (
+        <NavigationLinkItem item={item} key={item.id} />
+      ))}
+    </NestingItem>
+  );
 };
 
 const NavigationLinkItem = ({ item }: { item: NavigationItem }) => {
