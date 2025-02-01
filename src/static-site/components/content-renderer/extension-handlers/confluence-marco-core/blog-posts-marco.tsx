@@ -15,7 +15,10 @@
  */
 import React, { useEffect, useState } from "react";
 
+import Avatar from "@atlaskit/avatar";
+import { Date } from "@atlaskit/date";
 import Spinner from "@atlaskit/spinner";
+import { colorPalette } from "@atlaskit/theme/color-palettes";
 import axios from "axios";
 
 import { unescapeExcerpt } from "../../../../../common/helpers";
@@ -62,6 +65,25 @@ const BlogPostItem = ({ post }: { post: BlogPostSummary }) => {
       <div className={"blog-post-item-content"}>
         <a href={post.href}>{post.identifier.title}</a>
         <div className="excerpt">{unescapeExcerpt(post.excerpt)}</div>
+        <div className="by-line">
+          <Avatar
+            appearance="circle"
+            src={`/assets/avatars/${post.author.id}-avatar`}
+          />
+          <div
+            style={{
+              color: colorPalette("24")[16].background,
+              display: "inline-block",
+              marginLeft: 5,
+            }}
+          >
+            <div>by {post.author.title}</div>
+            <div style={{ display: "inline-block" }}>
+              on{" "}
+              <Date value={post.createdDate} color="blue" format="MMMM do y" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

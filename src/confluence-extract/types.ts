@@ -46,6 +46,7 @@ interface ContentData {
     identifier: ContentIdentifier;
     author: Author;
     excerpt: string;
+    createdDate: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
     childPages: ContentIdentifier[];
@@ -57,9 +58,9 @@ interface BlogPostSummary {
     identifier: ContentIdentifier;
     author: Author;
     excerpt: string;
-    href: string;
     createdDate: number;
     createdYear: number;
+    href: string;
 }
 
 interface NavigationItem extends ContentIdentifier {

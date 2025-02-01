@@ -40,6 +40,8 @@ const mapSearchResultItemToContentData = (
         accountId: '',
         publicName: ''
     };
+    const createdAt = new Date(content.history?.createdDate || 0);
+    const createdDate = createdAt.getTime();
     return {
         identifier: {
             id: content.id,
@@ -54,6 +56,7 @@ const mapSearchResultItemToContentData = (
                 .digest('hex'),
             title: createdBy.publicName
         },
+        createdDate,
         excerpt,
         body: scrubContent(environment, contentBody),
         childPages: childPages.map(({ id, title, type, metadata }) => ({
