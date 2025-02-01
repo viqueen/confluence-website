@@ -15,7 +15,7 @@
  */
 import { Environment, Output } from '../common';
 import { titleToPath } from '../common/helpers';
-import { Api, Content } from '../confluence-api';
+import { Content } from '../confluence-api';
 
 import { extractContent } from './extract-content';
 import { Clients, NavigationItem } from './types';
