@@ -39,6 +39,7 @@ interface Attachment {
 
 interface ContentData {
     identifier: ContentIdentifier;
+    excerpt: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
     childPages: ContentIdentifier[];
@@ -48,6 +49,7 @@ interface ContentData {
 
 interface BlogPostSummary {
     identifier: ContentIdentifier;
+    excerpt: string;
     href: string;
     createdDate: number;
     createdYear: number;

@@ -105,6 +105,7 @@ interface SearchResponse {
 
 interface SearchResultItem {
     content: Content;
+    excerpt: string;
 }
 
 export type {

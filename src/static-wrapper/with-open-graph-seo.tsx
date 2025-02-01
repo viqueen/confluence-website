@@ -23,8 +23,8 @@ const withOpenGraphSeo = (environment: Environment, content: ContentData) => {
     <>
       <meta name="og:title" content={content.identifier.title} />
       <meta property="og:title" content={content.identifier.title} />
-      {/*<meta name="og:description" content={content.excerpt} />*/}
-      {/*<meta property="og:description" content={content.excerpt} />*/}
+      <meta name="og:description" content={content.excerpt} />
+      <meta property="og:description" content={content.excerpt} />
       <meta name="og:url" content={environment.TARGET_SITE} />
       <meta property="og:url" content={environment.TARGET_SITE} />
     </>

@@ -15,14 +15,14 @@
  */
 import { Environment } from '../common';
 import { titleToPath } from '../common/helpers';
-import { Content, ContentMetadata } from '../confluence-api';
+import { ContentMetadata, SearchResultItem } from '../confluence-api';
 
 import { scrubContent } from './helpers/adf-processor';
 import { BlogPostSummary, ContentData } from './types';
 
-const mapContentToContentData = (
+const mapSearchResultItemToContentData = (
     environment: Environment,
-    content: Content
+    { content, excerpt }: SearchResultItem
 ): ContentData => {
     let contentBody = emptyContentBody;
     if (content.body && content.body.atlas_doc_format) {
@@ -41,6 +41,7 @@ const mapContentToContentData = (
             type: content.type,
             ...metadata
         },
+        excerpt,
         body: scrubContent(environment, contentBody),
         childPages: childPages.map(({ id, title, type, metadata }) => ({
             id,
@@ -58,7 +59,10 @@ const mapContentToContentData = (
     };
 };
 
-const mapContentToBlogPostSummary = (content: Content): BlogPostSummary => {
+const mapSearchResultItemToBlogPostSummary = ({
+    content,
+    excerpt
+}: SearchResultItem): BlogPostSummary => {
     const createdAt = new Date(content.history?.createdDate || 0);
     const createdDate = createdAt.getTime();
     const createdYear = createdAt.getFullYear();
@@ -70,6 +74,7 @@ const mapContentToBlogPostSummary = (content: Content): BlogPostSummary => {
             emoji: content.metadata?.properties['emoji-title-published']?.value,
             coverUrl: getCoverUrl(content.metadata)
         },
+        excerpt,
         href: `/blogs/${titleToPath(content.title)}/`,
         createdDate,
         createdYear
@@ -90,4 +95,7 @@ const emptyContentBody = {
     content: []
 };
 
-export { mapContentToContentData, mapContentToBlogPostSummary };
+export {
+    mapSearchResultItemToContentData,
+    mapSearchResultItemToBlogPostSummary
+};

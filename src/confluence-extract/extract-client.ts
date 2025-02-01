@@ -24,12 +24,12 @@ import axios from 'axios';
 
 import { Environment, Output } from '../common';
 import { titleToPath, toExtension } from '../common/helpers';
-import { Api, Content } from '../confluence-api';
+import { Api, Content, SearchResultItem } from '../confluence-api';
 
 import { rewriteUrl } from './helpers/rewrite-url';
 import {
-    mapContentToBlogPostSummary,
-    mapContentToContentData
+    mapSearchResultItemToBlogPostSummary,
+    mapSearchResultItemToContentData
 } from './mappers';
 import { saveContentData, saveContentTemplate } from './save-content';
 import { ContentData, Extract, LeftNavigation, NavigationItem } from './types';
@@ -71,11 +71,14 @@ class ExtractClient implements Extract {
         );
         // extract blog posts
         const blogPostsResponse = await this.api.searchSpaceBlogPosts(spaceKey);
-        const blogPosts = blogPostsResponse.results.map(
-            (result) => result.content
-        );
+        const blogPosts = blogPostsResponse.results;
         for (const blogPost of blogPosts) {
-            await this.extractContentItem(environment, output, blogPost, false);
+            await this.extractContentItem(
+                environment,
+                output,
+                blogPost.content,
+                false
+            );
         }
 
         const blogs = await this.extractBlogPosts(output, blogPosts);
@@ -86,10 +89,10 @@ class ExtractClient implements Extract {
 
     private async extractBlogPosts(
         output: Output,
-        blogPosts: Content[]
+        blogPosts: SearchResultItem[]
     ): Promise<Record<number, NavigationItem[]>> {
         console.info(`📚 extract blog posts: ${blogPosts.length}`);
-        const blogs = blogPosts.map(mapContentToBlogPostSummary);
+        const blogs = blogPosts.map(mapSearchResultItemToBlogPostSummary);
         fs.writeFileSync(
             path.resolve(output.site.home, 'blogs.json'),
             JSON.stringify(blogs, null, 2)
@@ -199,20 +202,23 @@ class ExtractClient implements Extract {
             `📄 extract content: ${contentItem.id} - ${contentItem.title}`
         );
         const response = await this.api.searchContent(contentItem.id);
-        const content = response.results[0]?.content;
-        if (!content) {
+        const resultItem = response.results[0];
+        if (!resultItem) {
             throw Error('❌ content not found');
         }
-        const contentData = mapContentToContentData(environment, content);
+        const contentData = mapSearchResultItemToContentData(
+            environment,
+            resultItem
+        );
 
-        await this.extractContentAttachments(output, content);
+        await this.extractContentAttachments(output, resultItem.content);
         await this.extractContentEmojis(output, contentData);
         await this.extractContentObjects(environment, output, contentData);
 
         await saveContentTemplate(environment, output, contentData, asHomepage);
         await saveContentData(output, contentData, asHomepage);
 
-        return content;
+        return resultItem.content;
     }
 
     private async extractContentObjects(
