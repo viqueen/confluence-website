@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { ChildProcess, exec } from 'child_process';
+import path from 'path';
 
 import type { Options, Capabilities } from '@wdio/types';
 import axios from 'axios';
@@ -45,7 +46,14 @@ export const config: Options.Testrunner &
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: ['visual'],
+    services: [
+        [
+            'visual',
+            {
+                screenshotPath: path.join(process.cwd(), 'artifacts')
+            }
+        ]
+    ],
     framework: 'mocha',
     reporters: ['spec'],
     mochaOpts: {
