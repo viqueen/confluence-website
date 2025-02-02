@@ -19,6 +19,8 @@ import path from 'path';
 import type { Options, Capabilities } from '@wdio/types';
 import axios from 'axios';
 
+const testEnvironment = process.env.TEST_ENVIRONMENT ?? 'local';
+
 let testServerProcess: ChildProcess;
 
 // noinspection JSUnusedGlobalSymbols
@@ -50,7 +52,8 @@ export const config: Options.Testrunner &
         [
             'visual',
             {
-                screenshotPath: path.join(process.cwd(), 'artifacts')
+                screenshotPath: path.join(process.cwd(), 'artifacts'),
+                formatImageName: `{tag}-${testEnvironment}-{width}x{height}`
             }
         ]
     ],

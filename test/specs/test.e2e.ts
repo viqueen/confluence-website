@@ -15,11 +15,6 @@
  */
 import { expect, browser } from '@wdio/globals';
 
-const screenShotName = (name: string) => {
-    const suffix = process.env.TEST_ENVIRONMENT ?? 'local';
-    return `${name}-${suffix}`;
-};
-
 describe('Confluence Website', () => {
     const setup = async () => {
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'browser'.
@@ -39,13 +34,13 @@ describe('Confluence Website', () => {
     it('should save some screenshots', async () => {
         await setup();
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'browser'.
-        await browser.saveScreen(screenShotName('home-page'));
+        await browser.saveScreen('home-page');
     });
 
     it('should compare successfully with a baseline', async () => {
         await setup();
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'browser'.
-        const result = await browser.checkScreen(screenShotName('home-page'));
+        const result = await browser.checkScreen('home-page');
         expect(result).toEqual(0);
     });
 });
