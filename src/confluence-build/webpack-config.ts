@@ -27,6 +27,8 @@ interface WebpackConfigProps {
     output: Output;
 }
 
+const isWDIO = process.env.NODE_ENV === 'webdriverio';
+
 const webpackConfig = ({
     mode,
     isDev,
@@ -53,9 +55,13 @@ const webpackConfig = ({
     const plugins = [definePlugin, ...htmlPlugins];
 
     const staticSiteSources = path.join(__dirname, '..', 'static-site');
-    const siteEntry = isDev
+    let siteEntry = isDev
         ? path.join(staticSiteSources, 'index.tsx')
         : path.join(staticSiteSources, 'index.js');
+
+    if (isWDIO) {
+        siteEntry = path.join(staticSiteSources, 'index.js');
+    }
 
     return {
         mode,
