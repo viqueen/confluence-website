@@ -15,6 +15,14 @@
     "type": "doc",
     "content": [
       {
+        "type": "extension",
+        "attrs": {
+          "extensionType": "com.atlassian.confluence.macro.core",
+          "extensionKey": "unsupportedKey",
+          "parameters": {}
+        }
+      },
+      {
         "type": "heading",
         "attrs": {
           "level": 2
