@@ -1,6 +1,6 @@
 {
   "name": "@labset/confluence-website",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "confluence website builder",
   "repository": "git@github.com:viqueen/confluence-website.git",
   "author": "Hasnae R. <>",
@@ -74,6 +74,7 @@
     "@atlaskit/theme": "^14.1.0",
     "@atlaskit/tokens": "^3.2.0",
     "@labset/fs-directory": "^1.1.0",
+    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.7.9",
     "commander": "^13.1.0",
     "css-loader": "^7.1.2",

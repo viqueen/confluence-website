@@ -19,6 +19,7 @@ import { Environment } from "../common";
 import { ContentData } from "../confluence-extract";
 
 import { withOpenGraphSeo } from "./with-open-graph-seo";
+import { withVercelSpeedInsights } from "./with-vercel-speed-insights";
 
 const StaticWrapper = (environment: Environment, content: ContentData) => {
   return (
@@ -32,6 +33,7 @@ const StaticWrapper = (environment: Environment, content: ContentData) => {
       </head>
       <body>
         <div id="root" />
+        {withVercelSpeedInsights(environment)}
       </body>
     </html>
   );
