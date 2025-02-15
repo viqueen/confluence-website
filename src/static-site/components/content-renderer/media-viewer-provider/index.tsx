@@ -17,12 +17,9 @@ import React, { useCallback, useMemo, useState } from "react";
 
 // eslint-disable-next-line import/no-named-as-default
 import Lightbox from "yet-another-react-lightbox";
-// eslint-disable-next-line import/no-unresolved
 import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
-// eslint-disable-next-line import/no-unresolved
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
-// eslint-disable-next-line import/no-unresolved
 import "yet-another-react-lightbox/styles.css";
 import { Attachment } from "../../../../confluence-extract";
 

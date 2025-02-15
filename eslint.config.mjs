@@ -5,9 +5,7 @@ import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import labsetEslint from "@labset-eslint/eslint-plugin";
-// eslint-disable-next-line import/no-unresolved
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
-// eslint-disable-next-line import/no-unresolved
 import tsParser from "@typescript-eslint/parser";
 import _import from "eslint-plugin-import";
 import globals from "globals";
@@ -60,6 +58,9 @@ export default [
       "import/resolver": {
         node: {
           extensions: [".js", ".ts", ".tsx"],
+        },
+        typescript: {
+          alwaysTryTypes: true,
         },
       },
     },
