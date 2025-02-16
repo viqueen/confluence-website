@@ -16,8 +16,12 @@
 import { Output } from '../common';
 
 interface Build {
-    prod(output: Output): Promise<void>;
-    dev(output: Output, port: number): Promise<void>;
+    prod(output: Output, assets: string | undefined): Promise<void>;
+    dev(
+        output: Output,
+        port: number,
+        assets: string | undefined
+    ): Promise<void>;
 }
 
 export { Build };

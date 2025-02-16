@@ -1,6 +1,6 @@
 {
   "name": "@labset/confluence-website",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "confluence website builder",
   "repository": "git@github.com:viqueen/confluence-website.git",
   "author": "Hasnae R. <>",
@@ -78,6 +78,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.7.9",
     "commander": "^13.1.0",
+    "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
     "dotenv": "^16.4.7",
     "html-webpack-plugin": "^5.6.3",

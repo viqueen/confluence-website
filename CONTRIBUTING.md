@@ -37,7 +37,7 @@ npm run cli -- build-space <spaceKey> --dev
 - or test with local content
 
 ```bash
-npm run cli -- build-space public --dest local --dev
+npm run cli -- build-space public --assets ./assets --dest local --dev
 ```
 
 ## house-keeping

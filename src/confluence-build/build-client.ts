@@ -22,11 +22,12 @@ import { Build } from './types';
 import { webpackConfig } from './webpack-config';
 
 class BuildClient implements Build {
-    async prod(output: Output): Promise<void> {
+    async prod(output: Output, assets: string | undefined): Promise<void> {
         const config = webpackConfig({
             mode: 'production',
             isDev: false,
-            output
+            output,
+            assets
         });
         const compiler = webpack(config);
         compiler.run((error, stats) => {
@@ -46,11 +47,16 @@ class BuildClient implements Build {
         });
     }
 
-    async dev(output: Output, port: number): Promise<void> {
+    async dev(
+        output: Output,
+        port: number,
+        assets: string | undefined
+    ): Promise<void> {
         const config = webpackConfig({
             mode: 'development',
             isDev: true,
-            output
+            output,
+            assets
         });
         const compiler = webpack(config);
         const devServer = {

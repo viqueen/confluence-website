@@ -19,13 +19,14 @@ import { BuildClient } from '../../confluence-build';
 const commandBuildSpace = async (
     output: Output,
     isDev: boolean,
-    port: number
+    port: number,
+    assets: string | undefined
 ) => {
     const build = new BuildClient();
     if (isDev) {
-        await build.dev(output, port);
+        await build.dev(output, port, assets);
     } else {
-        await build.prod(output);
+        await build.prod(output, assets);
     }
 };
 

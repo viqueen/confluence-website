@@ -56,12 +56,18 @@ withOptions(`extract-space <spaceKet>`, 'Extract content from a space').action(
 
 // build site resources
 withOptions(`build-space <spaceKey>`, 'Build site resources')
+    .option('--assets <value>', 'with assets')
     .option('--dev', 'build for development', false)
     .option('--port <port>', 'development server port', '3000')
     .action(
         async (
             spaceKey: string,
-            options: { dest: string; dev: boolean; port: string }
+            options: {
+                dest: string;
+                dev: boolean;
+                assets: string | undefined;
+                port: string;
+            }
         ) => {
             const output = prepareOutput({
                 spaceKey,
@@ -70,7 +76,8 @@ withOptions(`build-space <spaceKey>`, 'Build site resources')
             await commandBuildSpace(
                 output,
                 options.dev,
-                parseInt(options.port)
+                parseInt(options.port),
+                options.assets
             );
         }
     );

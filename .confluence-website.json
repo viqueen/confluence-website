@@ -1,6 +1,6 @@
 {
   "title": "confluence-website",
-  "iconUrl": "",
+  "iconUrl": "/assets/images/logo.png",
   "name": "/website",
   "theme": {
     "name": "confluence-website",

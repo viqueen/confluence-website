@@ -16,6 +16,8 @@
 import path from 'path';
 
 import { listFiles } from '@labset/fs-directory';
+// eslint-disable-next-line import/default
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
 
@@ -25,6 +27,7 @@ interface WebpackConfigProps {
     mode: 'production' | 'development';
     isDev: boolean;
     output: Output;
+    assets: string | undefined;
 }
 
 const isWDIO = process.env.NODE_ENV === 'webdriverio';
@@ -32,7 +35,8 @@ const isWDIO = process.env.NODE_ENV === 'webdriverio';
 const webpackConfig = ({
     mode,
     isDev,
-    output
+    output,
+    assets
 }: WebpackConfigProps): Configuration => {
     const indexFiles = listFiles(output.templates.home, {
         fileFilter: (entry) => entry.name === 'index.html',
@@ -52,7 +56,20 @@ const webpackConfig = ({
         process: { env: { CI: false } }
     });
 
-    const plugins = [definePlugin, ...htmlPlugins];
+    const copyPlugin = assets
+        ? new CopyWebpackPlugin({
+              patterns: [
+                  {
+                      from: path.join(process.cwd(), assets),
+                      to: output.site.home
+                  }
+              ]
+          })
+        : undefined;
+
+    const plugins = copyPlugin
+        ? [definePlugin, ...htmlPlugins, copyPlugin]
+        : [definePlugin, ...htmlPlugins];
 
     const staticSiteSources = path.join(__dirname, '..', 'static-site');
     let siteEntry = isDev
