@@ -61,7 +61,7 @@ const webpackConfig = ({
               patterns: [
                   {
                       from: path.join(process.cwd(), assets),
-                      to: output.site.home
+                      to: path.join(output.site.home, 'assets')
                   }
               ]
           })

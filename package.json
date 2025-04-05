@@ -1,6 +1,6 @@
 {
   "name": "@labset/confluence-website",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "confluence website builder",
   "repository": "git@github.com:viqueen/confluence-website.git",
   "author": "Hasnae R. <>",
@@ -22,6 +22,7 @@
     "format": "prettier --check --write .",
     "lint": "eslint .",
     "cli": "ts-node src/cli/index.ts",
+    "cli:prod": "node dist/cli/index.js",
     "wdio": "NODE_ENV=webdriverio TS_NODE_PROJECT=test/tsconfig.json wdio run ./wdio.conf.ts"
   },
   "devDependencies": {
