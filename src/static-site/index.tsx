@@ -23,6 +23,7 @@ import {
   PageLayout,
   TopNavigation,
 } from "@atlaskit/page-layout";
+import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 
@@ -50,6 +51,7 @@ const Site = () => {
           </Main>
         </Content>
       </PageLayout>
+      <Analytics />
       <SpeedInsights />
     </AppProvider>
   );

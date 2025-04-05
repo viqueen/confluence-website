@@ -76,6 +76,7 @@
     "@atlaskit/theme": "^14.1.0",
     "@atlaskit/tokens": "^3.2.0",
     "@labset/fs-directory": "^1.1.0",
+    "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.7.9",
     "commander": "^13.1.0",
