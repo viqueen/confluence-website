@@ -20,7 +20,6 @@ interface Environment {
     CONFLUENCE_USERNAME: string;
     CONFLUENCE_API_TOKEN: string;
     TARGET_SITE: string;
-    ENABLE_VERCEL_SPEED_INSIGHTS: boolean;
 }
 
 const prepareEnvironment = (): Environment => {
@@ -32,10 +31,7 @@ const prepareEnvironment = (): Environment => {
             parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME,
         CONFLUENCE_API_TOKEN:
             parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN,
-        TARGET_SITE: parsed.TARGET_SITE ?? process.env.TARGET_SITE,
-        ENABLE_VERCEL_SPEED_INSIGHTS:
-            (parsed.ENABLE_VERCEL_SPEED_INSIGHTS as unknown) === 'true' ||
-            process.env.ENABLE_VERCEL_SPEED_INSIGHTS === 'true'
+        TARGET_SITE: parsed.TARGET_SITE ?? process.env.TARGET_SITE
     };
 };
 
