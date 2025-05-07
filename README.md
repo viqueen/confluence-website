@@ -26,7 +26,6 @@ it creates a `.env` file with the following properties
 - `CONFLUENCE_USERNAME` : the username to use to consume Confluence APIs
 - `CONFLUENCE_API_TOKEN` : the user personal access token to consume Confluence APIs
 - `TARGET_SITE` : the domain name of where your generated site will be hosted
-- `GOOGLE_ANALYTICS_TRACKING_ID`: Google Analytics tracking id
 
 ```bash
 ./node_modules/.bin/confluence-website init-site
