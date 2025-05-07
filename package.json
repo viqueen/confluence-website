@@ -16,7 +16,6 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "postbuild": "node postbuild.js",
-    "test": "jest",
     "test:watch": "jest --watchAll",
     "format:check": "prettier --check .",
     "format": "prettier --check --write .",

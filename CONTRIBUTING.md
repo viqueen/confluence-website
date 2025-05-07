@@ -63,5 +63,5 @@ npm run lint --fix
 - test it
 
 ```bash
-npm test
+npm run wdio
 ```
