@@ -31,11 +31,11 @@ export const rewriteUrl = (environment: Environment, url: string): string => {
     }
     const isBlog = blogUrl.exec(url);
     if (isBlog) {
-        return `${environment.TARGET_SITE}/blogs/${isBlog.groups?.id}/`;
+        return `${environment.CUSTOM_DOMAIN}/blogs/${isBlog.groups?.id}/`;
     }
     const isPage = pageUrl.exec(url);
     if (isPage) {
-        return `${environment.TARGET_SITE}/pages/${isPage.groups?.id}/`;
+        return `${environment.CUSTOM_DOMAIN}/pages/${isPage.groups?.id}/`;
     }
     return url;
 };
