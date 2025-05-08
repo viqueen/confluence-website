@@ -25,7 +25,7 @@ it creates a `.env` file with the following properties
 - `CONFLUENCE_SITE_NAME` : the Confluence cloud instance you want to generate a site from (**name**.atlassian.net)
 - `CONFLUENCE_USERNAME` : the username to use to consume Confluence APIs
 - `CONFLUENCE_API_TOKEN` : the user personal access token to consume Confluence APIs
-- `TARGET_SITE` : the domain name of where your generated site will be hosted
+- `CUSTOM_DOMAIN` : the domain name of where your generated site will be hosted
 
 ```bash
 ./node_modules/.bin/confluence-website init-site
