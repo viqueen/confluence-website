@@ -19,7 +19,7 @@ interface Environment {
     CONFLUENCE_SITE_NAME: string;
     CONFLUENCE_USERNAME: string;
     CONFLUENCE_API_TOKEN: string;
-    TARGET_SITE: string;
+    CUSTOM_DOMAIN: string;
 }
 
 const prepareEnvironment = (): Environment => {
@@ -31,7 +31,7 @@ const prepareEnvironment = (): Environment => {
             parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME,
         CONFLUENCE_API_TOKEN:
             parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN,
-        TARGET_SITE: parsed.TARGET_SITE ?? process.env.TARGET_SITE
+        CUSTOM_DOMAIN: parsed.CUSTOM_DOMAIN ?? process.env.CUSTOM_DOMAIN
     };
 };
 

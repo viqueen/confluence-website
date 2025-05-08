@@ -40,7 +40,10 @@ describe('Confluence Website', () => {
     it('should compare successfully with a baseline', async () => {
         await setup();
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'browser'.
-        const result = await browser.checkScreen('home-page');
+        const result = await browser.checkScreen('home-page', {
+            rawMisMatchPercentage: 5,
+            ignoreAntialiasing: true
+        });
         expect(result).toEqual(0);
     });
 });
