@@ -15,10 +15,14 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
 
 import { Output } from '../common';
 import { toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
+
+const streamPipeline = promisify(pipeline);
 
 const extractContentAttachments = (
     confluence: Api,
@@ -33,7 +37,7 @@ const extractContentAttachments = (
                     prefix: '/wiki',
                     targetUrl: attachment._links.download
                 })
-                .then(({ stream }) => {
+                .then(async ({ stream }) => {
                     const fileExtension = toExtension(
                         attachment.extensions.mediaType
                     );
@@ -41,17 +45,20 @@ const extractContentAttachments = (
                         output.site.attachments,
                         `${attachment.extensions.fileId}${fileExtension}`
                     );
+                    const file = fs.createWriteStream(filePath);
+                    await streamPipeline(stream, file);
+
+                    let copyLink = '';
                     if (fileExtension !== '') {
-                        const symlink = path.resolve(
+                        copyLink = path.resolve(
                             output.site.attachments,
                             attachment.extensions.fileId
                         );
-                        if (!fs.existsSync(symlink)) {
-                            fs.symlinkSync(filePath, symlink);
-                        }
                     }
-                    const file = fs.createWriteStream(filePath);
-                    return stream.pipe(file);
+
+                    if (!fs.existsSync(copyLink)) {
+                        fs.copyFileSync(filePath, copyLink);
+                    }
                 })
                 .catch(console.error);
         })
