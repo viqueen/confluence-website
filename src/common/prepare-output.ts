@@ -38,7 +38,6 @@ interface Output {
 }
 
 interface PrepareOutputProps {
-    spaceKey: string;
     destination: string;
 }
 
@@ -53,9 +52,9 @@ const makeOutputDirectories = (data: object) => {
 };
 
 const prepareOutput = (props: PrepareOutputProps): Output => {
-    const { spaceKey, destination } = props;
-    const siteOutput = path.resolve(destination, 'site', spaceKey);
-    const templatesOutput = path.resolve(destination, 'templates', spaceKey);
+    const { destination } = props;
+    const siteOutput = path.resolve(destination, 'site');
+    const templatesOutput = path.resolve(destination, 'templates');
     const output = {
         site: {
             home: siteOutput,

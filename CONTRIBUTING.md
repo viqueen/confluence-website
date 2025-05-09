@@ -29,14 +29,14 @@ npm run cli -- init-env
 - extract and build your site
 
 ```bash
-npm run cli -- extract-space <spaceKey>
-npm run cli -- build-space <spaceKey> --dev
+npm run cli -- extract-site <spaceKey>
+npm run cli -- build-site --dev
 ```
 
 - or test with local content
 
 ```bash
-npm run cli -- build-space public --assets ./assets --dest local --dev
+npm run cli -- build-site --assets ./assets --dest local --dev
 ```
 
 ## house-keeping
