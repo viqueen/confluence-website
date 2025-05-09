@@ -39,7 +39,7 @@ const extractContentAttachments = (
                     );
                     const filePath = path.resolve(
                         output.site.attachments,
-                        `${attachment.extensions.fileId}.${fileExtension}`
+                        `${attachment.extensions.fileId}${fileExtension}`
                     );
                     if (fileExtension !== '') {
                         const symlink = path.resolve(
