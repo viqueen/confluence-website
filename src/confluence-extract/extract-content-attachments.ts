@@ -19,7 +19,6 @@ import { pipeline } from 'stream';
 import { promisify } from 'util';
 
 import { Output } from '../common';
-import { toExtension } from '../common/helpers';
 import { Api, Content } from '../confluence-api';
 
 const streamPipeline = promisify(pipeline);
@@ -38,27 +37,12 @@ const extractContentAttachments = (
                     targetUrl: attachment._links.download
                 })
                 .then(async ({ stream }) => {
-                    const fileExtension = toExtension(
-                        attachment.extensions.mediaType
-                    );
                     const filePath = path.resolve(
                         output.site.attachments,
-                        `${attachment.extensions.fileId}${fileExtension}`
+                        attachment.extensions.fileId
                     );
                     const file = fs.createWriteStream(filePath);
                     await streamPipeline(stream, file);
-
-                    let copyLink = '';
-                    if (fileExtension !== '') {
-                        copyLink = path.resolve(
-                            output.site.attachments,
-                            attachment.extensions.fileId
-                        );
-                    }
-
-                    if (!fs.existsSync(copyLink)) {
-                        fs.copyFileSync(filePath, copyLink);
-                    }
                 })
                 .catch(console.error);
         })
