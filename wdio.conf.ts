@@ -67,7 +67,7 @@ export const config: Options.Testrunner &
     onPrepare: async function (_config, _capabilities) {
         console.info('** onPrepare **');
         testServerProcess = exec(
-            'node dist/cli/index.js build-space public --dest local --dev',
+            'node dist/cli/index.js build-site --dest local --dev',
             (error, stdout, _stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);

@@ -46,31 +46,27 @@ withOptions('init-site', 'Configure site properties').action(async () => {
 });
 
 // extract content from a space
-withOptions(`extract-space <spaceKet>`, 'Extract content from a space').action(
+withOptions(`extract-site <spaceKey>`, 'Extract content from a space').action(
     async (spaceKey: string, options: { dest: string }) => {
         const environment = prepareEnvironment();
-        const output = prepareOutput({ spaceKey, destination: options.dest });
+        const output = prepareOutput({ destination: options.dest });
         await commandExtractSpace(environment, output, spaceKey);
     }
 );
 
 // build site resources
-withOptions(`build-space <spaceKey>`, 'Build site resources')
+withOptions(`build-site`, 'Build site resources')
     .option('--assets <value>', 'with assets')
     .option('--dev', 'build for development', false)
     .option('--port <port>', 'development server port', '3000')
     .action(
-        async (
-            spaceKey: string,
-            options: {
-                dest: string;
-                dev: boolean;
-                assets: string | undefined;
-                port: string;
-            }
-        ) => {
+        async (options: {
+            dest: string;
+            dev: boolean;
+            assets: string | undefined;
+            port: string;
+        }) => {
             const output = prepareOutput({
-                spaceKey,
                 destination: options.dest
             });
             await commandBuildSpace(
