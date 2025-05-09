@@ -18,13 +18,6 @@ const titleToPath = (title: string): string => {
     return noSpaces.replace(/[,?]/g, '');
 };
 
-const toExtension = (mediaType: string) => {
-    const matcher = RegExp(/image\/(?<ext>jpeg|jpg|png)/).exec(mediaType);
-    const ext = matcher?.groups?.ext;
-    if (ext) return `.${ext}`;
-    return '';
-};
-
 const unescapeExcerpt = (excerpt: string) => {
     return excerpt.replace(
         /&amp;|&#39;|&quot;/g,
@@ -37,4 +30,4 @@ const unescapeExcerpt = (excerpt: string) => {
     );
 };
 
-export { titleToPath, toExtension, unescapeExcerpt };
+export { titleToPath, unescapeExcerpt };
