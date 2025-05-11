@@ -20,6 +20,9 @@ interface Environment {
     CONFLUENCE_USERNAME: string;
     CONFLUENCE_API_TOKEN: string;
     CUSTOM_DOMAIN: string;
+    VERCEL_URL: string;
+
+    domainUrl: () => string;
 }
 
 const prepareEnvironment = (): Environment => {
@@ -31,7 +34,15 @@ const prepareEnvironment = (): Environment => {
             parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME,
         CONFLUENCE_API_TOKEN:
             parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN,
-        CUSTOM_DOMAIN: parsed.CUSTOM_DOMAIN ?? process.env.CUSTOM_DOMAIN
+        CUSTOM_DOMAIN: parsed.CUSTOM_DOMAIN ?? process.env.CUSTOM_DOMAIN,
+        VERCEL_URL: parsed.VERCEL_URL ?? process.env.VERCEL_URL,
+
+        domainUrl: () => {
+            if (!parsed.CUSTOM_DOMAIN) {
+                return `https://${parsed.VERCEL_URL}`;
+            }
+            return parsed.CUSTOM_DOMAIN;
+        }
     };
 };
 
