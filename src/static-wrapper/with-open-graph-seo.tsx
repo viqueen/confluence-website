@@ -21,16 +21,24 @@ import { ContentData } from "../confluence-extract";
 
 const withOpenGraphSeo = (environment: Environment, content: ContentData) => {
   const excerpt = unescapeExcerpt(content.excerpt);
+  const ogUrl = resolveOgUrl(environment, content);
   return (
     <>
       <meta name="og:title" content={content.identifier.title} />
       <meta property="og:title" content={content.identifier.title} />
       <meta name="og:description" content={excerpt} />
       <meta property="og:description" content={excerpt} />
-      <meta name="og:url" content={environment.CUSTOM_DOMAIN} />
-      <meta property="og:url" content={environment.CUSTOM_DOMAIN} />
+      <meta name="og:url" content={ogUrl} />
+      <meta property="og:url" content={ogUrl} />
     </>
   );
+};
+
+const resolveOgUrl = (environment: Environment, content: ContentData) => {
+  if (content.identifier.type === "page") {
+    return `${environment.domainUrl()}/pages/${content.identifier.id}/`;
+  }
+  return `${environment.domainUrl()}/blogs/${content.identifier.id}/`;
 };
 
 export { withOpenGraphSeo };
