@@ -27,21 +27,27 @@ interface Environment {
 
 const prepareEnvironment = (): Environment => {
     const parsed = (dotenv.config().parsed || {}) as unknown as Environment;
+    const confluenceSiteName =
+        parsed.CONFLUENCE_SITE_NAME ?? process.env.CONFLUENCE_SITE_NAME;
+    const confluenceUsername =
+        parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME;
+    const confluenceApiToken =
+        parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN;
+    const customDomain = parsed.CUSTOM_DOMAIN ?? process.env.CUSTOM_DOMAIN;
+    const vercelUrl = parsed.VERCEL_URL ?? process.env.VERCEL_URL;
+
     return {
-        CONFLUENCE_SITE_NAME:
-            parsed.CONFLUENCE_SITE_NAME ?? process.env.CONFLUENCE_SITE_NAME,
-        CONFLUENCE_USERNAME:
-            parsed.CONFLUENCE_USERNAME ?? process.env.CONFLUENCE_USERNAME,
-        CONFLUENCE_API_TOKEN:
-            parsed.CONFLUENCE_API_TOKEN ?? process.env.CONFLUENCE_API_TOKEN,
-        CUSTOM_DOMAIN: parsed.CUSTOM_DOMAIN ?? process.env.CUSTOM_DOMAIN,
-        VERCEL_URL: parsed.VERCEL_URL ?? process.env.VERCEL_URL,
+        CONFLUENCE_SITE_NAME: confluenceSiteName,
+        CONFLUENCE_USERNAME: confluenceUsername,
+        CONFLUENCE_API_TOKEN: confluenceApiToken,
+        CUSTOM_DOMAIN: customDomain,
+        VERCEL_URL: vercelUrl,
 
         domainUrl: () => {
-            if (!parsed.CUSTOM_DOMAIN) {
-                return `https://${parsed.VERCEL_URL}`;
+            if (!customDomain) {
+                return `https://${vercelUrl}`;
             }
-            return parsed.CUSTOM_DOMAIN;
+            return customDomain;
         }
     };
 };
