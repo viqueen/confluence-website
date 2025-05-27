@@ -35,6 +35,8 @@ const ContentRenderer = ({ content }: { content: ContentData }) => {
         <MediaViewerProvider attachments={content.attachments ?? []}>
           <ReactRenderer
             document={content.body}
+            allowCopyToClipboard={true}
+            allowWrapCodeBlock={true}
             dataProviders={dataProviders()}
             extensionHandlers={extensionHandlers(content)}
           />

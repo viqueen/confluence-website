@@ -1,6 +1,6 @@
 {
   "name": "@labset/confluence-website",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "confluence website builder",
   "repository": "git@github.com:viqueen/confluence-website.git",
   "author": "Hasnae R. <>",
