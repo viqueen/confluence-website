@@ -84,7 +84,9 @@ const NestableNav = ({
   return (
     <NestableNavigationContent initialStack={stack}>
       <Section title="Pages">
-        {pages?.map((page) => <PageNavigation page={page} key={page.id} />)}
+        {pages?.map((page) => (
+          <PageNavigation page={page} key={page.id} />
+        ))}
       </Section>
       <Section title={"Blogs"} hasSeparator={true}>
         {Object.entries(blogs || {})
